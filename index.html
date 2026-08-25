@@ -76,7 +76,11 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .set.on{background:#0f2a21;border-color:var(--ok);color:var(--ok)}
 .set:active{transform:scale(.94)}
 
-.ladder{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+.ladder{margin-top:10px;border-top:1px solid var(--line);padding-top:10px;font-size:13.5px;color:var(--dim)}
+.ladder .hh{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--dim2);margin-bottom:3px}
+.awake{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--ok)}
+.awake i{width:6px;height:6px;border-radius:50%;background:var(--ok);display:block}
 .step{display:flex;gap:9px;align-items:center;padding:6px 0;font-size:13.5px;color:var(--dim2)}
 .step .dot{width:7px;height:7px;border-radius:50%;background:var(--line);flex:0 0 7px}
 .step.cur{color:var(--tx);font-weight:600}
@@ -275,17 +279,16 @@ ul.tick li b{color:var(--tx);font-weight:600}
   </div>
 
   <div class="card">
-    <h3>Progressing with bands</h3>
-    <p style="font-size:14px;margin-top:6px">You cannot add 2.5&nbsp;kg to a band, so you progress in this order:</p>
-    <ul class="tick">
-      <li><b>Reps</b> — reach the top of the range on every set</li>
-      <li><b>Tension</b> — shorten your grip or stand wider on the band</li>
-      <li><b>Tempo</b> — 3 seconds lowering, no bounce at the bottom</li>
-      <li><b>Leverage</b> — one limb instead of two, or a longer range</li>
-      <li><b>Band</b> — only then move to the next colour up</li>
-    </ul>
-    <p class="hint">When you hit the top of the range on all sets and it still felt easy, tap
-    <b style="color:var(--tx)">Level up</b> on that exercise. The app remembers per exercise.</p>
+    <h3>How it gets harder</h3>
+    <p style="font-size:14px;margin-top:6px">One version of each exercise. Nothing to choose, nothing to
+    unlock. The difficulty comes from the wave above — <b style="color:var(--tx)">more sets and fewer reps
+    left in the tank</b>, week after week, on the same movements.</p>
+    <p style="font-size:14px;margin-top:9px">If an exercise genuinely stops being hard, each one carries a
+    single line — <b style="color:var(--tx)">When it gets easy</b> — telling you the one change to make.
+    Usually that is slowing the lowering down or going one limb at a time. Do not go looking for it; you
+    will know when you are there.</p>
+    <p class="hint">Standing wider on a band raises the tension without changing anything else. That is the
+    quiet adjustment you will use most.</p>
   </div>
 
   <div class="card">
@@ -308,6 +311,8 @@ ul.tick li b{color:var(--tx);font-weight:600}
   </div>
 
   <button class="btn gho full" id="resetProg" style="margin-top:4px;color:var(--hot)">Reset all progress</button>
+  <p class="hint" style="text-align:center;margin-top:12px">Version <b style="color:var(--dim)" id="verS">—</b>
+  · updates itself when you open it online</p>
 </div></div>
 
 <!-- ============ FOOD ============ -->
@@ -471,80 +476,95 @@ ul.tick li b{color:var(--tx);font-weight:600}
 /* ---------------- exercise library ---------------- */
 const EX = {
 pullapart:{n:"Band Pull-Apart",t:"Warm-up",
- c:"Arms straight out in front, band across your chest. Pull apart until your knuckles line up with your shoulders. <b>Squeeze, don't fling.</b>",
- L:["Wide grip, light band","Shoulder-width grip","Narrow grip","Narrow grip, 2s hold at the end","Heavy band, narrow grip"]},
+ s:"Heavy band, hands shoulder-width apart",
+ c:"Arms straight out in front, band across your chest. Pull it apart until your knuckles are in line with your shoulders. <b>Squeeze, don't fling.</b>",
+ h:"Take 3 seconds coming back in."},
 
 pushup:{n:"Push-Up",t:"Push",
- c:"Ribs down, glutes tight, body one line. <b>Lower for 3 seconds</b>, touch, press. Elbows at about 45°, not flared out.",
- L:["Hands on a wall","Hands on a counter","Hands on a chair seat","Knees on the floor","Full push-up","Feet on a chair","Band across your back"]},
+ s:"On the floor, legs straight, hands under your shoulders",
+ c:"Ribs down, glutes tight, body one line from head to heels. <b>Lower for 3 seconds</b>, chest to the floor, press. Elbows at about 45°, not flared out to the side.",
+ h:"Feet up on a chair, or a band across your back."},
 
 ohp:{n:"Band Overhead Press",t:"Push",
- c:"Stand on the band, hands at your shoulders. Press up without letting your ribs flare. <b>Squeeze your glutes</b> — that is what stops your lower back arching.",
- L:["Seated, light band","Standing, light band","Standing, medium band","Split stance, medium band","One arm at a time","Heavy band"]},
+ s:"Heavy band under both feet, hands at your shoulders",
+ c:"Press straight up without letting your ribs flare. <b>Squeeze your glutes</b> — that is what stops your lower back arching. Arms finish beside your ears.",
+ h:"One arm at a time, same band."},
 
 pallof:{n:"Pallof Press",t:"Brace",
- c:"Band anchored at chest height to your side. Press it straight out and <b>refuse to rotate</b>. The work is in not moving.",
- L:["Kneeling, close to the anchor","Kneeling, further out","Standing, feet apart","Standing, narrow stance","Half-kneeling","Standing + overhead sweep"]},
+ s:"Band anchored at chest height to one side",
+ c:"Press it straight out from your chest and <b>refuse to rotate</b>. The work is entirely in not moving. All reps one side, then turn round.",
+ h:"Step further away from the anchor."},
 
 deadbug:{n:"Dead Bug",t:"Brace",
- c:"On your back, lower back <b>pressed flat</b> into the floor the whole time. Opposite arm and leg reach away slowly. If your back lifts, shorten the reach.",
- L:["Arms only","Legs only, bent knees","Opposite arm and bent leg","Opposite arm and straight leg","Add a band overhead","Heels hovering throughout"]},
+ s:"On your back, arms straight up, knees over your hips",
+ c:"Lower back <b>pressed flat</b> into the floor the whole time. Opposite arm and leg reach away slowly. If your back lifts off, you reached too far — shorten it.",
+ h:"Straighten the reaching leg fully."},
 
 dislocate:{n:"Band Pass-Through",t:"Warm-up",
- c:"Wide grip on the band, arms straight, sweep it from your thighs over your head to your back. <b>Go as wide as you need</b> to keep your elbows locked.",
- L:["Very wide grip, light band","Wide grip","Shoulder-width plus a hand","Narrow grip","Narrow grip, pause behind"]},
+ s:"Light band, arms straight, hands wide",
+ c:"Sweep the band from your thighs over your head to behind your back, and return. <b>Go as wide as you need</b> to keep your elbows locked straight.",
+ h:"Pause 2 seconds behind you."},
 
 rdl:{n:"Band Romanian Deadlift",t:"Hinge",
- c:"Stand on the band. <b>Push your hips backwards</b>, not down — knees stay softly bent. Feel it in the hamstrings, stop when your back would round.",
- L:["Hips to a wall behind you","Bodyweight hinge, dowel on your back","Light band, both legs","Medium band, both legs","Heavy band","One leg at a time"]},
+ s:"Heavy band under both feet, hands at your thighs",
+ c:"<b>Push your hips backwards</b>, not down — knees stay softly bent. Feel it stretch in the hamstrings. Stop the moment your back would round.",
+ h:"3 seconds lowering, no bounce."},
 
 row:{n:"Band Row",t:"Pull",
- c:"Anchor at waist height or sit with the band round your feet. Pull to your ribs, <b>elbows past your torso</b>, shoulder blades back and down. Two seconds out.",
- L:["Seated, light band","Seated, medium band","Standing bent-over, medium","Standing bent-over, heavy","One arm at a time","One arm + 2s hold"]},
+ s:"Heavy band round your feet, seated — or anchored at waist height",
+ c:"Pull to your ribs, <b>elbows past your torso</b>, shoulder blades back and down. Two seconds on the way out.",
+ h:"One arm at a time."},
 
 facepull:{n:"Face Pull",t:"Pull",
- c:"Anchor above head height. Pull towards your forehead, hands ending <b>wider than your elbows</b>, thumbs back. The antidote to a day spent leaning over a table.",
- L:["Light band, seated","Light band, standing","Medium band","Medium band, 2s hold","Half-kneeling, heavy"]},
+ s:"Medium band anchored above head height",
+ c:"Pull towards your forehead, hands finishing <b>wider than your elbows</b>, thumbs pointing back. The direct antidote to a day spent leaning over a table.",
+ h:"Hold 2 seconds at your forehead."},
 
 carry:{n:"Suitcase Carry",t:"Carry",
- c:"A loaded backpack or shopping bag in one hand. Walk tall, <b>do not lean away from it</b>. This is the single most transferable thing in the plan.",
- L:["Bag in each hand, 30s","One hand, light, 30s","One hand, heavier, 30s","One hand, heavy, 45s","Overhead carry, light","Heavy + on tiptoes"]},
+ s:"A loaded backpack or shopping bag in one hand",
+ c:"Walk tall, <b>do not lean away from it</b>. Shoulders level. The single most transferable thing in the plan.",
+ h:"Heavier bag, or walk 45 seconds."},
 
 squat:{n:"Band Front Squat",t:"Squat",
- c:"Stand on the band, hands at your shoulders holding the tension. Sit down between your feet, <b>chest up</b>, as deep as you can without your back rounding.",
- L:["Sit to a chair and stand","Bodyweight, full depth","Light band","Medium band","Heavy band","Heavy band, 3s down + 2s pause"]},
+ s:"Heavy band under both feet, hands at your shoulders",
+ c:"Sit down between your feet, <b>chest up</b>, as deep as you can without your back rounding. Knees track out over your toes.",
+ h:"3 seconds down, 2 second pause at the bottom."},
 
 splitsquat:{n:"Split Squat",t:"Squat",
- c:"Long stance, back knee drops towards the floor. <b>Most of the weight on the front foot.</b> The one that carries over to stairs.",
- L:["Hand on a wall for balance","Free-standing","Deeper, back knee touches","Rear foot on a low step","Rear foot on a chair","Add a band under the front foot"]},
+ s:"Long stance, hand on a wall only if you need it",
+ c:"Back knee drops towards the floor. <b>Most of the weight on the front foot.</b> The one that carries straight over to stairs.",
+ h:"Rear foot up on a chair."},
 
 bridge:{n:"Hip Bridge",t:"Hinge",
+ s:"Both feet flat, band over your hips",
  c:"Heels close to your backside, drive through the heels, <b>squeeze the glutes at the top</b> for two seconds. Ribs stay down.",
- L:["Both feet, no band","Both feet, band over the hips","March at the top","One leg, other knee hugged in","One leg, foot on a chair","One leg + band"]},
+ h:"One leg at a time, other knee hugged in."},
 
 calf:{n:"Calf Raise",t:"Squat",
- c:"Toes on the edge of a step. All the way down for a stretch, all the way up, <b>one second pause at the top</b>. Slow, not bouncy.",
- L:["Both legs, flat floor","Both legs, off a step","Both up, one down (slow)","One leg, flat floor","One leg off a step","One leg + a backpack"]},
+ s:"Toes on the edge of a step",
+ c:"All the way down for a stretch, all the way up, <b>one second pause at the top</b>. Slow, never bouncy.",
+ h:"One leg at a time."},
 
 getup:{n:"Floor Get-Up",t:"Carry",
- c:"Lie down, stand up, lie back down — <b>using your hands as little as possible</b>. Alternate which leg leads. The thing that keeps you independent at 80.",
- L:["Both hands to help","One hand to help","One hand, no knee down","No hands, any pattern","No hands, holding a bag","No hands, bag overhead"]},
+ s:"Lie down, stand up, lie back down",
+ c:"Use your hands <b>as little as possible</b>. Alternate which leg leads. The thing that keeps people independent at eighty.",
+ h:"No hands at all, or hold a bag."},
 
 latwalk:{n:"Band Lateral Walk",t:"Warm-up",
- c:"Band round your ankles or knees, quarter squat, step sideways. <b>Keep tension the whole way</b> — do not let your feet clack together.",
- L:["Band at the knees, light","Band at the knees, medium","Band at the ankles","Ankles, deeper squat","Ankles, heavy band"]},
+ s:"Band round your ankles, quarter squat",
+ c:"Step sideways and <b>keep the tension the whole way</b> — do not let your feet clack together.",
+ h:"Heavier band, deeper squat."},
 
-/* reset day */
-tspine:{n:"Thoracic Opener",t:"Reset",
- c:"Rolled towel across your mid-back, hands behind your head, breathe and let your upper back drape over it. Move the towel up and down a few centimetres.",L:["60 seconds"]},
-hipflex:{n:"Hip Flexor Stretch",t:"Reset",
- c:"Half-kneeling, <b>tuck your pelvis under</b> first, then ease forward. If you feel it in your lower back you have not tucked.",L:["45 seconds each side"]},
-squathold:{n:"Deep Squat Hold",t:"Reset",
- c:"Sit as deep as you can, heels down if possible, elbows inside your knees. Hold on to something if you need to.",L:["30 seconds"]},
-neck:{n:"Neck & Upper Trap",t:"Reset",
- c:"Ear towards your shoulder, opposite hand behind your back. Gentle. This one is for the days spent looking down.",L:["30 seconds each side"]},
-hang:{n:"Hang or Band Overhead Hold",t:"Reset",
- c:"Hang from anything solid, or hold a band overhead with straight arms and lean back slightly. Decompresses everything a long list compresses.",L:["30 seconds"]}
+tspine:{n:"Thoracic Opener",t:"Reset",s:"Rolled towel across your mid-back",
+ c:"Hands behind your head, breathe, and let your upper back drape over the towel. Move it up and down a few centimetres to find the tight spots.",h:""},
+hipflex:{n:"Hip Flexor Stretch",t:"Reset",s:"Half-kneeling",
+ c:"<b>Tuck your pelvis under first</b>, then ease forward. If you feel it in your lower back, you have not tucked.",h:""},
+squathold:{n:"Deep Squat Hold",t:"Reset",s:"Heels down if you can",
+ c:"Sit as deep as you can, elbows inside your knees. Hold a door frame if you need to.",h:""},
+neck:{n:"Neck & Upper Trap",t:"Reset",s:"Gentle — never force it",
+ c:"Ear towards your shoulder, opposite hand behind your back. This one is for the days spent looking down.",h:""},
+hang:{n:"Hang or Band Overhead Hold",t:"Reset",s:"Anything solid overhead",
+ c:"Hang, or hold a band overhead with straight arms and lean back slightly. Decompresses everything a long list compresses.",h:""}
 };
 
 
@@ -698,23 +718,27 @@ const WAVE=[{n:"Groove",sm:0,rir:"stop 3 reps short"},
 const BADGE=[
  {i:"\u{1F331}",n:"Started",     d:"First session logged",              f:S=>S.done.length>=1},
  {i:"\u{1F501}",n:"Full cycle",  d:"All 7 sessions of the rotation",    f:S=>S.done.length>=7},
- {i:"\u{1F4C8}",n:"First level", d:"Levelled up any exercise",          f:S=>Object.values(S.lv).some(v=>v>0)},
+ {i:"\u{1F3AF}",n:"Perfect week",d:"Five sessions inside one week",     f:S=>maxWeekCount(S)>=5},
  {i:"\u{1F30A}",n:"Full wave",   d:"Groove to Deload without quitting", f:S=>S.done.length>=20},
  {i:"\u{1F4AA}",n:"25 sessions", d:"Twenty-five in the bank",           f:S=>S.done.length>=25},
- {i:"\u{1F9F1}",n:"Broad base",  d:"Levelled up 5 different exercises", f:S=>Object.values(S.lv).filter(v=>v>0).length>=5},
+ {i:"\u{1F9F1}",n:"All four",    d:"Trained A, B, C and Reset",         f:S=>new Set(S.done.map(d=>d.s)).size>=4},
  {i:"\u{1F5FB}",n:"50 sessions", d:"Fifty. This is a habit now",        f:S=>S.done.length>=50},
- {i:"\u{1F3AF}",n:"Century",     d:"One hundred sessions",              f:S=>S.done.length>=100}
+ {i:"\u{1F3C1}",n:"Century",     d:"One hundred sessions",              f:S=>S.done.length>=100}
 ];
+function maxWeekCount(st){
+  const c={};st.done.forEach(function(d){const k=isoWeek(d.d);c[k]=(c[k]||0)+1});
+  const v=Object.keys(c).map(function(k){return c[k]});
+  return v.length?Math.max.apply(null,v):0;
+}
 function earned(st){return BADGE.filter(b=>b.f(st))}
 
 /* ---------------- state ---------------- */
 const KEY="ds1";
-const DEF={start:null,done:[],lv:{},cur:null,food:{w:80,h:175,a:35,s:"m",act:"1.5",goal:"1"}};
+const DEF={start:null,done:[],cur:null,food:{w:80,h:175,a:35,s:"m",act:"1.5",goal:"1"}};
 let S=load();
 function load(){try{return Object.assign({},DEF,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){return Object.assign({},DEF)}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const today=()=>new Date().toISOString().slice(0,10);
-const lv=x=>Math.min(S.lv[x]||0,EX[x].L.length-1);
 
 function weekIdx(){
   if(!S.start)return 0;
@@ -760,25 +784,20 @@ function renderToday(){
 
   document.getElementById("exList").innerHTML=ses.items.map(function(it,i){
     const e=EX[it.x],n=setsFor(it),marks=S.cur.m[it.x]||[],
-          done=marks.filter(Boolean).length>=n,L=lv(it.x),multi=e.L.length>1;
+          done=marks.filter(Boolean).length>=n;
     return '<div class="ex'+(done?' done':'')+'" data-x="'+it.x+'">'+
       '<div class="hd" data-t="1">'+
         '<div class="num">'+(done?"✓":i+1)+'</div>'+
         '<div class="grow"><h3>'+e.n+'</h3>'+
         '<div class="meta">'+n+' × '+it.r+' · '+it.rest+'s rest</div>'+
-        (multi?'<div class="lvl">'+e.L[L]+'</div>':'')+'</div>'+
+        '<div class="lvl">'+e.s+'</div></div>'+
       '</div>'+
       '<div class="body">'+
         figBlock(it.x)+
         '<div class="cue">'+e.c+'</div>'+
         '<div class="sets">'+Array.from({length:n},function(_,j){
           return '<button class="set'+(marks[j]?" on":"")+'" data-s="'+j+'">'+(j+1)+'</button>'}).join("")+'</div>'+
-        (multi?'<div class="ladder">'+e.L.map(function(t,j){
-          return '<div class="step '+(j===L?"cur":j<L?"past":"")+'"><span class="dot"></span>'+t+'</div>'}).join("")+
-          '<div class="row" style="gap:8px;margin-top:10px">'+
-          (L>0?'<button class="btn sm" data-lv="-1">Back a step</button>':'')+
-          (L<e.L.length-1?'<button class="btn sm pri" data-lv="1">Level up</button>':'<span class="pill ok">Top level</span>')+
-          '</div></div>':"")+
+        (e.h?'<div class="ladder"><b class="hh">When it gets easy</b>'+e.h+'</div>':"")+
       '</div></div>';
   }).join("");
 
@@ -798,19 +817,12 @@ document.getElementById("exList").addEventListener("click",function(ev){
     const j=+sb.dataset.s,it=SESSIONS[S.cur.k].items.find(function(i){return i.x===x}),n=setsFor(it);
     const m=S.cur.m[x]||(S.cur.m[x]=new Array(n).fill(false));
     m[j]=!m[j];save();
+    if(m[j])keepAwake();
     const open=card.classList.contains("open");
     renderToday();
     if(open){const c2=document.querySelector('.ex[data-x="'+x+'"]');if(c2)c2.classList.add("open")}
     if(m[j])startTimer(it.rest);
     return;
-  }
-  const lb=ev.target.closest("[data-lv]");
-  if(lb){
-    const was=lv(x);
-    S.lv[x]=Math.max(0,Math.min(EX[x].L.length-1,was+ +lb.dataset.lv));save();
-    if(S.lv[x]>was) toast(EX[x].n+" \u2192 "+EX[x].L[S.lv[x]]);
-    renderToday();
-    const c2=document.querySelector('.ex[data-x="'+x+'"]');if(c2)c2.classList.add("open");
   }
 });
 
@@ -821,7 +833,7 @@ document.getElementById("finishBtn").addEventListener("click",function(){
   const before=earned(S).map(function(b){return b.n});
   if(!S.start)S.start=today();
   S.done.push({d:today(),s:k,sets:got});
-  S.cur=null;save();stopTimer();
+  S.cur=null;save();stopTimer();letSleep();
   renderToday();renderLog();
   celebrate(ses,got,earned(S).filter(function(b){return before.indexOf(b.n)<0}));
   window.scrollTo({top:0,behavior:"smooth"});
@@ -830,6 +842,24 @@ document.getElementById("finishBtn").addEventListener("click",function(){
 document.getElementById("resetProg").addEventListener("click",function(){
   if(!confirm("Delete all sessions, levels and progress? This cannot be undone."))return;
   const food=S.food;S=Object.assign({},DEF,{food:food});save();renderToday();renderLog();
+});
+
+/* ---------------- keep the screen awake ---------------- */
+const BUILD="4";
+let wl=null,wlTold=false;
+function sessionLive(){return S.cur&&Object.keys(S.cur.m||{}).some(function(k){
+  return (S.cur.m[k]||[]).some(Boolean)})}
+function keepAwake(){
+  if(!("wakeLock" in navigator)||wl)return;
+  navigator.wakeLock.request("screen").then(function(l){
+    wl=l; l.addEventListener("release",function(){wl=null});
+    if(!wlTold){wlTold=true;toast("Screen stays on while you train")}
+  }).catch(function(){});
+}
+function letSleep(){try{if(wl){wl.release();wl=null}}catch(e){}}
+document.addEventListener("visibilitychange",function(){
+  if(document.visibilityState==="visible"&&sessionLive())keepAwake();
+  else if(document.visibilityState!=="visible")letSleep();
 });
 
 /* ---------------- celebration & toast ---------------- */
@@ -984,16 +1014,17 @@ function renderLog(){
       '</td><td class="n mono">'+x.v+'</td></tr>'}).join("")+'</tbody></table>';
 
   /* --- concrete evidence of progress --- */
-  const ups=Object.keys(S.lv).filter(function(x){return S.lv[x]>0&&EX[x]});
   const totalSets=S.done.reduce(function(a,d){return a+d.sets},0);
+  const bestW=maxWeekCount(S);
+  const avg=S.done.length?(totalSets/S.done.length).toFixed(1):0;
+  const days=S.start?Math.max(1,Math.round((new Date(today())-new Date(S.start))/864e5)):0;
   document.getElementById("lgProof").innerHTML=
     (!S.done.length?'<p style="font-size:14px">Nothing to show yet. This fills in once you train.</p>':
     '<div class="row b" style="font-size:14px"><span style="color:var(--dim)">Sets completed</span><b class="mono">'+totalSets+'</b></div>'+
-    '<div class="row b" style="font-size:14px;margin-top:7px"><span style="color:var(--dim)">Exercises levelled up</span><b class="mono">'+ups.length+'</b></div>'+
-    (ups.length?'<div class="sep"></div>'+ups.map(function(x){
-      return '<div style="font-size:13.5px;margin-bottom:7px"><b>'+EX[x].n+'</b>'+
-        '<div style="color:var(--dim2)">'+EX[x].L[0]+' &rsaquo; <span style="color:var(--acc)">'+EX[x].L[lv(x)]+'</span></div></div>'}).join("")
-     :'<p class="hint">Nothing levelled up yet. When a set feels easy at the top of the range, open the exercise and tap Level up.</p>'));
+    '<div class="row b" style="font-size:14px;margin-top:7px"><span style="color:var(--dim)">Best week</span><b class="mono">'+bestW+' sessions</b></div>'+
+    '<div class="row b" style="font-size:14px;margin-top:7px"><span style="color:var(--dim)">Average per session</span><b class="mono">'+avg+' sets</b></div>'+
+    '<div class="row b" style="font-size:14px;margin-top:7px"><span style="color:var(--dim)">Training since</span><b class="mono">'+days+' days</b></div>'+
+    '<div class="sep"></div><p class="hint">Every one of those sets is work your back, hips and grip did not do before. The plan gets harder on its own \u2014 same exercises, more sets, fewer reps left in the tank.</p>');
 
   /* --- badges: icon + label, never colour alone --- */
   const got=earned(S).map(function(b){return b.n});
@@ -1032,9 +1063,18 @@ document.querySelectorAll("nav button").forEach(function(b){
   });
 });
 
+document.getElementById("verS").textContent=BUILD;
 renderToday();renderFood();renderLog();
-if("serviceWorker" in navigator)
-  window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js").catch(function(){})});
+if("serviceWorker" in navigator){
+  const hadCtl=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange",function(){
+    // Only when an OLD worker is being replaced — not on first install.
+    if(hadCtl&&!window.__reloaded){window.__reloaded=true;location.reload()}
+  });
+  window.addEventListener("load",function(){
+    navigator.serviceWorker.register("./sw.js").then(function(r){r.update()}).catch(function(){});
+  });
+}
 </script>
 </body>
 </html>
