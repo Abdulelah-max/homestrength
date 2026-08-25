@@ -144,6 +144,87 @@ ul.tick li b{color:var(--tx);font-weight:600}
 .hint{font-size:13px;color:var(--dim2);line-height:1.5;margin-top:8px}
 .sep{height:1px;background:var(--line);margin:16px 0}
 .streak{font-size:34px;font-weight:750;letter-spacing:-.04em;line-height:1}
+
+/* figures */
+.figs{display:flex;align-items:center;gap:6px;background:#0f141b;border:1px solid var(--line);
+  border-radius:11px;padding:8px 6px;margin-bottom:11px}
+.figw{flex:1;min-width:0;text-align:center}
+.fg{width:100%;height:88px;display:block}
+.fg .bd{stroke:#c7d2e0;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.fg .bd circle{fill:#c7d2e0;stroke:none}
+.fg .gr{stroke:#39424f;stroke-width:2;stroke-linecap:round}
+.fg .bn{stroke:var(--acc);stroke-width:2.6;stroke-linecap:round;fill:none;stroke-dasharray:5 4}
+.fg .pr{stroke:#7d8899;stroke-width:3;stroke-linecap:round;fill:none}
+.figw .cap{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--dim2);margin-top:2px}
+.figw.end .fg .bd{stroke:var(--acc)} .figw.end .fg .bd circle{fill:var(--acc)}
+.figw.end .cap{color:var(--acc)}
+.figar{flex:0 0 14px;color:var(--dim2);font-size:15px;line-height:1}
+
+/* progress ring */
+.ring{width:46px;height:46px;flex:0 0 46px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:5;stroke-linecap:round}
+.ring .bgc{stroke:var(--panel2)} .ring .fgc{stroke:var(--acc);transition:stroke-dasharray .45s ease}
+.ringw{position:relative;width:46px;height:46px;flex:0 0 46px}
+.ringw span{position:absolute;inset:0;display:grid;place-items:center;font-size:12px;
+  font-weight:750;color:var(--tx);font-variant-numeric:tabular-nums}
+
+/* celebration */
+#cel{position:fixed;inset:0;z-index:80;background:rgba(8,11,15,.93);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:24px}
+#cel.on{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+#cel .box{max-width:340px;width:100%;text-align:center;animation:pop .4s cubic-bezier(.2,.8,.3,1)}
+#cel .tick{width:74px;height:74px;margin:0 auto 16px;border-radius:50%;background:#0f2a21;
+  border:2px solid var(--ok);display:grid;place-items:center}
+#cel .tick svg{width:38px;height:38px;stroke:var(--ok);stroke-width:3;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;
+  animation:draw .45s .2s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+#cel h2{font-size:24px;margin:0 0 5px;letter-spacing:-.02em}
+#cel .stats{display:flex;gap:8px;margin:20px 0 6px}
+#cel .stats div{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 6px}
+#cel .stats b{display:block;font-size:21px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+#cel .stats small{font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+#cel .earn{background:#12243a;border:1px solid #25476b;border-radius:11px;padding:12px;margin-top:12px}
+#cel .earn .bi{font-size:26px} #cel .earn b{color:var(--acc);font-size:14px}
+
+/* badges */
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bdg{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 10px;
+  display:flex;gap:9px;align-items:flex-start}
+.bdg .bi{font-size:20px;line-height:1.15;filter:grayscale(1);opacity:.35}
+.bdg.got{border-color:#25476b;background:#101a26}
+.bdg.got .bi{filter:none;opacity:1}
+.bdg b{font-size:12.5px;font-weight:650;display:block;line-height:1.3}
+.bdg small{font-size:11px;line-height:1.35;display:block;margin-top:1px}
+.bdg.got b{color:var(--acc)}
+
+/* chart */
+.cht{display:flex;align-items:flex-end;gap:3px;height:104px;margin:14px 0 0}
+.cht .cb{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+  height:100%;gap:4px;cursor:default;position:relative}
+.cht .cb i{display:block;width:100%;background:var(--acc);border-radius:4px 4px 2px 2px;
+  min-height:3px;transition:.2s;opacity:.85}
+.cht .cb:hover i{opacity:1}
+.cht .cb.now i{box-shadow:0 0 0 2px var(--panel),0 0 0 3px var(--acc)}
+.cht .cb.zero i{background:var(--line)}
+.cht .cb u{font-size:9.5px;color:var(--dim2);text-decoration:none;font-variant-numeric:tabular-nums}
+.cht .cb .tt{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:4px 8px;
+  font-size:11px;white-space:nowrap;opacity:0;pointer-events:none;transition:.15s;z-index:5}
+.cht .cb:hover .tt{opacity:1}
+.cht .cb.e0 .tt{left:0;transform:none}
+.cht .cb.e1 .tt{left:auto;right:0;transform:none}
+.chl{display:flex;justify-content:space-between;font-size:11px;color:var(--dim2);margin-top:7px}
+
+/* toast */
+#toast{position:fixed;left:12px;right:12px;bottom:calc(112px + var(--safe-b));z-index:60;
+  display:none;justify-content:center}
+#toast.on{display:flex;animation:pop .3s ease}
+#toast div{background:var(--acc);color:#04121f;border-radius:11px;padding:10px 16px;font-weight:700;
+  font-size:13.5px;box-shadow:0 8px 28px rgba(0,0,0,.5);text-align:center}
 </style>
 </head>
 <body>
@@ -337,9 +418,40 @@ ul.tick li b{color:var(--tx);font-weight:600}
       <span style="color:var(--dim)">Current block</span><b id="lgBlock">Week 1 · Groove</b>
     </div>
   </div>
+  <h2>Sessions per week</h2>
+  <div class="card">
+    <div id="lgChart"></div>
+    <div class="row b" style="margin-top:12px">
+      <small id="lgChartNote"></small>
+      <button class="btn sm gho" id="lgTbl">Table</button>
+    </div>
+    <div id="lgTblBox" style="display:none;margin-top:11px"></div>
+  </div>
+
+  <h2>What has actually changed</h2>
+  <div class="card" id="lgProof"></div>
+
+  <h2>Milestones</h2>
+  <div class="bgrid" id="lgBadges"></div>
+
   <h2>History</h2>
   <div id="lgList"></div>
 </div></div>
+
+<div id="cel"><div class="box">
+  <div class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div>
+  <h2 id="celH">Done</h2>
+  <p id="celP" style="font-size:14px"></p>
+  <div class="stats">
+    <div><b class="mono" id="celS1">0</b><small>sets today</small></div>
+    <div><b class="mono" id="celS2">0</b><small>sessions</small></div>
+    <div><b class="mono" id="celS3">0</b><small>week streak</small></div>
+  </div>
+  <div id="celEarn"></div>
+  <button class="btn pri full" id="celClose" style="margin-top:16px">Close</button>
+</div></div>
+
+<div id="toast"><div id="toastT"></div></div>
 
 <div id="timer"><div class="in">
   <span class="t mono" id="tmT">0:00</span>
@@ -435,6 +547,118 @@ hang:{n:"Hang or Band Overhead Hold",t:"Reset",
  c:"Hang from anything solid, or hold a band overhead with straight arms and lean back slightly. Decompresses everything a long list compresses.",L:["30 seconds"]}
 };
 
+
+/* ---------------- figures ---------------- */
+const BODY={
+ stand :{hd:[50,17],nk:[50,27],pv:[50,55],kn:[[46,74],[54,74]],an:[[46,94],[54,94]]},
+ narrow:{hd:[50,17],nk:[50,27],pv:[50,55],kn:[[47,74],[53,74]],an:[[47,94],[53,94]]},
+ wideF :{hd:[50,17],nk:[50,27],pv:[50,55],kn:[[41,74],[59,74]],an:[[38,94],[62,94]]},
+ squatB:{hd:[50,31],nk:[50,40],pv:[50,62],kn:[[39,70],[61,70]],an:[[34,94],[66,94]]},
+ hingeB:{hd:[26,35],nk:[33,37],pv:[60,47],kn:[[58,70],[64,70]],an:[[56,94],[62,94]]},
+ lungeU:{hd:[50,17],nk:[50,27],pv:[50,55],kn:[[36,74],[64,76]],an:[[32,94],[70,94]]},
+ lungeD:{hd:[50,26],nk:[50,36],pv:[50,63],kn:[[35,79],[68,86]],an:[[31,94],[74,94]]},
+ plankH:{hd:[18,50],nk:[28,54],pv:[57,68],kn:[[73,78],[73,78]],an:[[88,89],[88,89]]},
+ plankL:{hd:[18,66],nk:[28,70],pv:[57,76],kn:[[73,83],[73,83]],an:[[88,89],[88,89]]},
+ supine:{hd:[18,80],nk:[27,83],pv:[58,86],kn:[[58,64],[64,64]],an:[[73,62],[79,62]]},
+ supinX:{hd:[18,80],nk:[27,83],pv:[58,86],kn:[[58,64],[76,80]],an:[[73,62],[93,85]]},
+ bridgD:{hd:[18,80],nk:[27,82],pv:[57,83],kn:[[71,64],[71,64]],an:[[80,86],[80,86]]},
+ bridgU:{hd:[18,80],nk:[27,82],pv:[57,68],kn:[[71,60],[71,60]],an:[[80,86],[80,86]]},
+ hkneel:{hd:[48,20],nk:[48,30],pv:[48,58],kn:[[34,72],[62,88]],an:[[30,90],[76,90]]},
+ hkneeX:{hd:[44,18],nk:[45,28],pv:[50,57],kn:[[34,71],[66,88]],an:[[30,90],[82,90]]},
+ seated:{hd:[31,25],nk:[34,35],pv:[39,64],kn:[[64,63],[64,63]],an:[[74,88],[74,88]]},
+ deepSq:{hd:[50,41],nk:[50,49],pv:[50,68],kn:[[35,64],[65,64]],an:[[41,90],[59,90]]},
+ calfU :{hd:[50,7],nk:[50,17],pv:[50,45],kn:[[46,64],[54,64]],an:[[46,84],[54,84]]},
+ lieFla:{hd:[16,80],nk:[25,83],pv:[55,85],kn:[[72,85],[72,85]],an:[[86,86],[86,86]]},
+ arch  :{hd:[16,84],nk:[25,84],pv:[55,80],kn:[[72,82],[72,82]],an:[[86,86],[86,86]]},
+ hangY :{hd:[50,24],nk:[50,34],pv:[50,60],kn:[[48,78],[54,78]],an:[[48,94],[54,94]]}
+};
+const ARM={
+ down  :[-8,14,-8,28, 8,14, 8,28],
+ papA  :[-7,12,-4,23, 7,12, 4,23],
+ papB  :[-15,9,-30,8, 15,9, 30,8],
+ front :[-9,15,-20,17, 9,15, 20,17],
+ rack  :[-12,13,-6,4, 12,13, 6,4],
+ over  :[-9,-6,-6,-21, 9,-6, 6,-21],
+ chest :[-11,11,-3,17, 11,11, 3,17],
+ hips  :[-11,13,-7,23, 11,13, 7,23],
+ pallA :[-7,12,-15,14, -3,12,-13,15],
+ pallB :[-17,10,-31,10, -17,13,-31,13],
+ fpA   :[-11,-6,-20,-15, 11,-6, 20,-15],
+ fpB   :[-17,-4,-8,-13, 17,-4, 8,-13],
+ carry :[-8,14,-8,32, 8,14, 8,27],
+ plankA:[0,18,0,36, 0,18,0,36],
+ plankB:[-9,10,0,20, -9,10,0,20],
+ dbA   :[0,-14,0,-27, 5,-14,5,-27],
+ dbB   :[-11,-12,-22,-17, 4,-14,4,-27],
+ hdown :[4,18,7,35, 7,18,10,35],
+ srowA :[15,7,30,13, 15,10,30,16],
+ srowB :[3,12,13,16, 3,15,13,19],
+ bdown :[10,5,21,6, 10,8,21,9],
+ flat  :[11,3,23,3, 11,6,23,6]
+};
+function mkPose(d){
+ const B=BODY[d.b],A=ARM[d.m]||ARM.down,n=B.nk;
+ const hd=d.hd?[B.hd[0]+d.hd[0],B.hd[1]+d.hd[1]]:B.hd;
+ return {hd:hd,nk:n,pv:B.pv,kn:B.kn,an:B.an,
+   e1:[n[0]+A[0],n[1]+A[1]],h1:[n[0]+A[2],n[1]+A[3]],
+   e2:[n[0]+A[4],n[1]+A[5]],h2:[n[0]+A[6],n[1]+A[7]]};
+}
+function bandSegs(t,p){
+ if(t==="ank-hn")   return [[p.an[0],p.h1],[p.an[1],p.h2]];
+ if(t==="hn-hn")    return [[p.h1,p.h2]];
+ if(t==="top-hn")   return [[[50,3],p.h1],[[50,3],p.h2]];
+ if(t==="left-hn")  return [[[4,42],p.h1]];
+ if(t==="ank-ank")  return [[p.an[0],p.an[1]]];
+ if(t==="ank-hn1")  return [[p.an[0],p.h1]];
+ return null;
+}
+function figSVG(d,band,isEnd){
+ const p=mkPose(d),L=(a,b)=>'<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'"/>';
+ let g='<line class="gr" x1="5" y1="96" x2="95" y2="96"/>';
+ if(d.prop==="box") g+='<rect class="pr" x="'+(p.h1[0]-5)+'" y="'+p.h1[1]+'" width="10" height="9" rx="2"/>';
+ if(d.prop==="towel") g+='<line class="pr" x1="30" y1="90" x2="46" y2="90"/><circle class="pr" cx="38" cy="88" r="4"/>';
+ if(d.prop==="bar") g+='<line class="pr" x1="24" y1="8" x2="76" y2="8"/>';
+ if(d.prop==="step") g+='<line class="pr" x1="36" y1="88" x2="64" y2="88"/><line class="pr" x1="36" y1="88" x2="36" y2="96"/>';
+ g+='<g class="bd">'+L(p.nk,p.pv)+L(p.nk,p.e2)+L(p.e2,p.h2)
+   +L(p.pv,p.kn[1])+L(p.kn[1],p.an[1])+L(p.pv,p.kn[0])+L(p.kn[0],p.an[0])
+   +L(p.nk,p.e1)+L(p.e1,p.h1)
+   +'<circle cx="'+p.hd[0]+'" cy="'+p.hd[1]+'" r="6.4"/></g>';
+ const bs=band?bandSegs(band,p):null;
+ if(bs) g+='<g class="bn">'+bs.map(function(x){return L(x[0],x[1])}).join('')+'</g>';
+ return '<svg viewBox="0 0 100 100" class="fg" aria-hidden="true">'+g+'</svg>';
+}
+const FIG={
+ pullapart:{a:{b:"narrow",m:"papA"},z:{b:"narrow",m:"papB"},bd:"hn-hn",la:"Arms out",lz:"Pull apart"},
+ pushup   :{a:{b:"plankH",m:"plankA"},z:{b:"plankL",m:"plankB"},la:"Top",lz:"Chest low"},
+ ohp      :{a:{b:"stand",m:"rack"},z:{b:"stand",m:"over"},bd:"ank-hn",la:"At shoulders",lz:"Locked out"},
+ pallof   :{a:{b:"stand",m:"pallA"},z:{b:"stand",m:"pallB"},bd:"left-hn",la:"At chest",lz:"Pressed out"},
+ deadbug  :{a:{b:"supine",m:"dbA"},z:{b:"supinX",m:"dbB"},la:"Loaded",lz:"Reach away"},
+ dislocate:{a:{b:"stand",m:"front"},z:{b:"stand",m:"over"},bd:"hn-hn",la:"In front",lz:"Overhead"},
+ rdl      :{a:{b:"stand",m:"down"},z:{b:"hingeB",m:"hdown"},bd:"ank-hn",la:"Tall",lz:"Hips back"},
+ row      :{a:{b:"seated",m:"srowA"},z:{b:"seated",m:"srowB"},bd:"ank-hn",la:"Arms long",lz:"Elbows past"},
+ facepull :{a:{b:"stand",m:"fpA"},z:{b:"stand",m:"fpB"},bd:"top-hn",la:"Reach up",lz:"To forehead"},
+ carry    :{a:{b:"stand",m:"carry",prop:"box"},z:{b:"lungeU",m:"carry",prop:"box"},la:"Stand tall",lz:"Walk, no lean"},
+ squat    :{a:{b:"wideF",m:"rack"},z:{b:"squatB",m:"rack"},bd:"ank-hn",la:"Stand",lz:"Sit between feet"},
+ splitsquat:{a:{b:"lungeU",m:"down"},z:{b:"lungeD",m:"down"},la:"Long stance",lz:"Back knee down"},
+ bridge   :{a:{b:"bridgD",m:"bdown"},z:{b:"bridgU",m:"bdown"},la:"Hips down",lz:"Squeeze at top"},
+ calf     :{a:{b:"stand",m:"down",prop:"step"},z:{b:"calfU",m:"down",prop:"step"},la:"Heels low",lz:"All the way up"},
+ getup    :{a:{b:"lieFla",m:"flat"},z:{b:"stand",m:"down"},la:"On the floor",lz:"Standing"},
+ latwalk  :{a:{b:"narrow",m:"hips"},z:{b:"wideF",m:"hips"},bd:"ank-ank",la:"Feet close",lz:"Step wide"},
+ tspine   :{a:{b:"lieFla",m:"flat",prop:"towel"},z:{b:"arch",m:"over",prop:"towel"},la:"Towel under back",lz:"Drape over it"},
+ hipflex  :{a:{b:"hkneel",m:"down"},z:{b:"hkneeX",m:"down"},la:"Half-kneeling",lz:"Tuck, then forward"},
+ squathold:{a:{b:"stand",m:"down"},z:{b:"deepSq",m:"chest"},la:"Stand",lz:"Sit deep, hold"},
+ neck     :{a:{b:"stand",m:"down"},z:{b:"stand",m:"down",hd:[-7,2]},la:"Neutral",lz:"Ear to shoulder"},
+ hang     :{a:{b:"stand",m:"over",prop:"bar"},z:{b:"hangY",m:"over",prop:"bar"},la:"Reach up",lz:"Hang and breathe"}
+};
+function figBlock(x){
+ const f=FIG[x]; if(!f) return "";
+ return '<div class="figs">'+
+  '<div class="figw">'+figSVG(f.a,f.bd)+'<div class="cap">'+f.la+'</div></div>'+
+  '<div class="figar">&rsaquo;</div>'+
+  '<div class="figw end">'+figSVG(f.z,f.bd)+'<div class="cap">'+f.lz+'</div></div>'+
+ '</div>';
+}
+
 /* ---------------- sessions ---------------- */
 const SESSIONS = {
 A:{name:"Push & Brace",focus:"Chest, shoulders, triceps, anti-rotation",min:22,items:[
@@ -470,6 +694,19 @@ const WAVE=[{n:"Groove",sm:0,rir:"stop 3 reps short"},
             {n:"Peak",  sm:1,rir:"stop 1 rep short"},
             {n:"Deload",sm:-1,rir:"comfortable — this is the point"}];
 
+/* ---------------- badges ---------------- */
+const BADGE=[
+ {i:"\u{1F331}",n:"Started",     d:"First session logged",              f:S=>S.done.length>=1},
+ {i:"\u{1F501}",n:"Full cycle",  d:"All 7 sessions of the rotation",    f:S=>S.done.length>=7},
+ {i:"\u{1F4C8}",n:"First level", d:"Levelled up any exercise",          f:S=>Object.values(S.lv).some(v=>v>0)},
+ {i:"\u{1F30A}",n:"Full wave",   d:"Groove to Deload without quitting", f:S=>S.done.length>=20},
+ {i:"\u{1F4AA}",n:"25 sessions", d:"Twenty-five in the bank",           f:S=>S.done.length>=25},
+ {i:"\u{1F9F1}",n:"Broad base",  d:"Levelled up 5 different exercises", f:S=>Object.values(S.lv).filter(v=>v>0).length>=5},
+ {i:"\u{1F5FB}",n:"50 sessions", d:"Fifty. This is a habit now",        f:S=>S.done.length>=50},
+ {i:"\u{1F3AF}",n:"Century",     d:"One hundred sessions",              f:S=>S.done.length>=100}
+];
+function earned(st){return BADGE.filter(b=>b.f(st))}
+
 /* ---------------- state ---------------- */
 const KEY="ds1";
 const DEF={start:null,done:[],lv:{},cur:null,food:{w:80,h:175,a:35,s:"m",act:"1.5",goal:"1"}};
@@ -500,9 +737,23 @@ function renderToday(){
   document.getElementById("hSub").textContent="~"+ses.min+" min";
 
   const doneToday=S.done.filter(d=>d.d===today()).length;
+  const tot=ses.items.reduce(function(a,it){return a+setsFor(it)},0);
+  const gt=ses.items.reduce(function(a,it){return a+((S.cur.m[it.x]||[]).filter(Boolean).length)},0);
+  const pct=tot?gt/tot:0, C=2*Math.PI*19;
   document.getElementById("todayHead").innerHTML=
     '<div class="row b"><span class="pill acc">Session '+k+'</span>'+
     '<span class="pill">Week '+(weekIdx()+1)+' · '+w.n+'</span></div>'+
+    '<div class="row" style="gap:13px;margin-top:13px">'+
+      '<div class="ringw"><svg class="ring" viewBox="0 0 46 46">'+
+      '<circle class="bgc" cx="23" cy="23" r="19"/>'+
+      '<circle class="fgc" cx="23" cy="23" r="19" stroke-dasharray="'+(C*pct).toFixed(1)+' '+C.toFixed(1)+'"/>'+
+      '</svg><span>'+Math.round(pct*100)+'</span></div>'+
+      '<div class="grow"><b style="font-size:14.5px">'+gt+' of '+tot+' sets</b>'+
+      '<div style="font-size:13px;color:var(--dim2)">'+
+      (gt===0?"Nothing done yet. Open the first exercise.":
+       gt>=tot?"Every set ticked. Hit finish.":
+       "Keep going — "+(tot-gt)+" to go.")+'</div></div>'+
+    '</div>'+
     '<p style="font-size:14px;margin-top:11px">'+ses.focus+'</p>'+
     '<p style="font-size:13.5px;color:var(--acc);margin-top:9px;font-weight:550">Every working set: '+w.rir+'.</p>'+
     (doneToday?'<p class="hint">You already logged '+doneToday+' session'+(doneToday>1?'s':'')+' today. Doing another is fine — just not two hard ones.</p>':'');
@@ -518,6 +769,7 @@ function renderToday(){
         (multi?'<div class="lvl">'+e.L[L]+'</div>':'')+'</div>'+
       '</div>'+
       '<div class="body">'+
+        figBlock(it.x)+
         '<div class="cue">'+e.c+'</div>'+
         '<div class="sets">'+Array.from({length:n},function(_,j){
           return '<button class="set'+(marks[j]?" on":"")+'" data-s="'+j+'">'+(j+1)+'</button>'}).join("")+'</div>'+
@@ -554,7 +806,9 @@ document.getElementById("exList").addEventListener("click",function(ev){
   }
   const lb=ev.target.closest("[data-lv]");
   if(lb){
-    S.lv[x]=Math.max(0,Math.min(EX[x].L.length-1,lv(x)+ +lb.dataset.lv));save();
+    const was=lv(x);
+    S.lv[x]=Math.max(0,Math.min(EX[x].L.length-1,was+ +lb.dataset.lv));save();
+    if(S.lv[x]>was) toast(EX[x].n+" \u2192 "+EX[x].L[S.lv[x]]);
     renderToday();
     const c2=document.querySelector('.ex[data-x="'+x+'"]');if(c2)c2.classList.add("open");
   }
@@ -564,10 +818,12 @@ document.getElementById("finishBtn").addEventListener("click",function(){
   const k=S.cur.k,ses=SESSIONS[k];
   const got=ses.items.reduce(function(a,it){return a+((S.cur.m[it.x]||[]).filter(Boolean).length)},0);
   if(got===0&&!confirm("Log "+ses.name+" with no sets ticked?"))return;
+  const before=earned(S).map(function(b){return b.n});
   if(!S.start)S.start=today();
   S.done.push({d:today(),s:k,sets:got});
   S.cur=null;save();stopTimer();
   renderToday();renderLog();
+  celebrate(ses,got,earned(S).filter(function(b){return before.indexOf(b.n)<0}));
   window.scrollTo({top:0,behavior:"smooth"});
 });
 
@@ -575,6 +831,34 @@ document.getElementById("resetProg").addEventListener("click",function(){
   if(!confirm("Delete all sessions, levels and progress? This cannot be undone."))return;
   const food=S.food;S=Object.assign({},DEF,{food:food});save();renderToday();renderLog();
 });
+
+/* ---------------- celebration & toast ---------------- */
+function celebrate(ses,got,fresh){
+  const setsToday=S.done.filter(function(d){return d.d===today()}).reduce(function(a,d){return a+d.sets},0);
+  document.getElementById("celH").textContent=ses.name+" done";
+  document.getElementById("celP").textContent=
+    fresh.length?"And you just unlocked something.":
+    got>=8?"That is the session that would have been easiest to skip.":
+    "Logged. Short still counts.";
+  document.getElementById("celS1").textContent=setsToday;
+  document.getElementById("celS2").textContent=S.done.length;
+  document.getElementById("celS3").textContent=document.getElementById("lgStreak").textContent;
+  document.getElementById("celEarn").innerHTML=fresh.map(function(b){
+    return '<div class="earn"><div class="bi">'+b.i+'</div><b>'+b.n+'</b>'+
+           '<div style="font-size:12.5px;color:var(--dim)">'+b.d+'</div></div>'}).join("");
+  document.getElementById("cel").classList.add("on");
+  beep(); if(navigator.vibrate)navigator.vibrate([90,50,90,50,160]);
+}
+document.getElementById("celClose").addEventListener("click",function(){
+  document.getElementById("cel").classList.remove("on")});
+let toastId=null;
+function toast(t){
+  document.getElementById("toastT").textContent=t;
+  const el=document.getElementById("toast");el.classList.add("on");
+  if(toastId)clearTimeout(toastId);
+  toastId=setTimeout(function(){el.classList.remove("on")},2600);
+  if(navigator.vibrate)navigator.vibrate(40);
+}
 
 /* ---------------- rest timer ---------------- */
 let tmId=null,tmLeft=0,tmTot=0;
@@ -650,6 +934,10 @@ function isoWeek(ds){
   const w1=new Date(d.getFullYear(),0,4);
   return d.getFullYear()+"-W"+String(1+Math.round(((d-w1)/864e5-3+((w1.getDay()+6)%7))/7)).padStart(2,"0");
 }
+document.getElementById("lgTbl").addEventListener("click",function(){
+  const b=document.getElementById("lgTblBox"),on=b.style.display!=="none";
+  b.style.display=on?"none":"block";this.textContent=on?"Table":"Hide table";
+});
 function renderLog(){
   document.getElementById("lgTotal").textContent=S.done.length;
   const w=wave();
@@ -669,6 +957,50 @@ function renderLog(){
     if(streak>520)break;
   }
   document.getElementById("lgStreak").textContent=streak;
+
+  /* --- weekly chart: one series, magnitude over time --- */
+  const wks=[],lbl=[];
+  for(let i=11;i>=0;i--){
+    const d=new Date(today());d.setDate(d.getDate()-i*7);
+    const k=isoWeek(d.toISOString().slice(0,10));
+    wks.push({k:k,v:byW[k]||0,d:new Date(d)});
+  }
+  const mx=Math.max(5,...wks.map(function(x){return x.v})),best=Math.max.apply(null,wks.map(function(x){return x.v}));
+  let shownBest=false;
+  document.getElementById("lgChart").innerHTML='<div class="cht">'+wks.map(function(x,i){
+    const h=Math.round(100*x.v/mx), now=x.k===tw;
+    const lab=(x.v===best&&best>0&&!shownBest&&!now)?(shownBest=true,x.v):(now&&x.v?x.v:"");
+    const dl=x.d.toLocaleDateString(undefined,{day:"numeric",month:"short"});
+    const edge=i<2?" e0":i>9?" e1":"";
+    return '<div class="cb'+(now?" now":"")+(x.v?"":" zero")+edge+'" title="'+dl+': '+x.v+'">'+
+      '<span class="tt">'+dl+' · '+x.v+' session'+(x.v===1?"":"s")+'</span>'+
+      '<u>'+lab+'</u><i style="height:'+h+'%"></i></div>'}).join("")+'</div>'+
+    '<div class="chl"><span>12 weeks ago</span><span>this week</span></div>';
+  document.getElementById("lgChartNote").textContent=
+    "Target is 5 a week. Bars, not feelings.";
+  document.getElementById("lgTblBox").innerHTML=
+    '<table><thead><tr><th>Week of</th><th style="text-align:right">Sessions</th></tr></thead><tbody>'+
+    wks.map(function(x){return '<tr><td>'+x.d.toLocaleDateString(undefined,{day:"numeric",month:"short"})+
+      '</td><td class="n mono">'+x.v+'</td></tr>'}).join("")+'</tbody></table>';
+
+  /* --- concrete evidence of progress --- */
+  const ups=Object.keys(S.lv).filter(function(x){return S.lv[x]>0&&EX[x]});
+  const totalSets=S.done.reduce(function(a,d){return a+d.sets},0);
+  document.getElementById("lgProof").innerHTML=
+    (!S.done.length?'<p style="font-size:14px">Nothing to show yet. This fills in once you train.</p>':
+    '<div class="row b" style="font-size:14px"><span style="color:var(--dim)">Sets completed</span><b class="mono">'+totalSets+'</b></div>'+
+    '<div class="row b" style="font-size:14px;margin-top:7px"><span style="color:var(--dim)">Exercises levelled up</span><b class="mono">'+ups.length+'</b></div>'+
+    (ups.length?'<div class="sep"></div>'+ups.map(function(x){
+      return '<div style="font-size:13.5px;margin-bottom:7px"><b>'+EX[x].n+'</b>'+
+        '<div style="color:var(--dim2)">'+EX[x].L[0]+' &rsaquo; <span style="color:var(--acc)">'+EX[x].L[lv(x)]+'</span></div></div>'}).join("")
+     :'<p class="hint">Nothing levelled up yet. When a set feels easy at the top of the range, open the exercise and tap Level up.</p>'));
+
+  /* --- badges: icon + label, never colour alone --- */
+  const got=earned(S).map(function(b){return b.n});
+  document.getElementById("lgBadges").innerHTML=BADGE.map(function(b){
+    const has=got.indexOf(b.n)>=0;
+    return '<div class="bdg'+(has?" got":"")+'"><div class="bi">'+b.i+'</div>'+
+      '<div class="grow"><b>'+b.n+(has?" \u2713":"")+'</b><small>'+b.d+'</small></div></div>'}).join("");
 
   const list=document.getElementById("lgList");
   if(!S.done.length){list.innerHTML='<div class="card flat"><p style="font-size:14px">Nothing logged yet. Finish a session and it shows up here.</p></div>';return}

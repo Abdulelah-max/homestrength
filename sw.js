@@ -1,5 +1,5 @@
 // Bump CACHE when app files change -> old cache is dropped and clients reload.
-const CACHE = 'daily-strength-v2';
+const CACHE = 'daily-strength-v3';
 
 const SHELL = [
   './',
