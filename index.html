@@ -249,13 +249,31 @@ ul.tick li b{color:var(--tx);font-weight:600}
 <div class="view" id="v-plan"><div class="wrap">
   <div class="card">
     <h3>How this works</h3>
-    <p style="font-size:14px;margin-top:6px">Five short sessions a week, drawn from a rolling seven-session cycle.
+    <p style="font-size:14px;margin-top:6px">Week one is five exercises, repeated. After that: five short
+    sessions a week, drawn from a rolling seven-session cycle.
     Every session trains the whole body through the six patterns daily life actually asks for:
     <b style="color:var(--tx)">hinge, squat, push, pull, carry, brace</b>.</p>
   </div>
 
   <div class="card">
-    <h3>The week</h3>
+    <h3>Your first week</h3>
+    <p style="font-size:14px;margin-top:6px">You start with <b style="color:var(--tx)">five exercises, full
+    stop</b> — one session, repeated five times. Same five movements every time.</p>
+    <table style="margin-top:11px"><tbody>
+      <tr><td><b>Band Front Squat</b></td><td class="n">3 × 12</td></tr>
+      <tr><td><b>Band Romanian Deadlift</b></td><td class="n">3 × 12</td></tr>
+      <tr><td><b>Push-Up</b></td><td class="n">3 × 6–12</td></tr>
+      <tr><td><b>Band Row</b></td><td class="n">3 × 12</td></tr>
+      <tr><td><b>Suitcase Carry</b></td><td class="n">3 × 30 s</td></tr>
+    </tbody></table>
+    <p class="hint">Squat, hinge, push, pull, carry — the five things everything else is built from. Sixteen
+    exercises in week one means sixteen things done roughly. Five means five done properly, and by Friday
+    they are automatic. The full rotation opens by itself once you have logged five sessions, so a missed
+    day costs you nothing.</p>
+  </div>
+
+  <div class="card">
+    <h3>The week — from week two</h3>
     <div class="wk">
       <div class="A">A</div><div class="B">B</div><div class="C">C</div>
       <div class="A">A</div><div class="B">B</div><div class="C">C</div><div class="R">R</div>
@@ -700,6 +718,12 @@ C:{name:"Legs & Carry",focus:"Quads, glutes, calves, getting off the floor",min:
   {x:"bridge",s:3,r:"10–12",rest:45},
   {x:"calf",s:3,r:"15–20",rest:40},
   {x:"getup",s:2,r:"3 / side",rest:45}]},
+W:{name:"Foundation",focus:"Five movements, learned properly — squat, hinge, push, pull, carry",min:23,items:[
+  {x:"squat",s:3,r:"12",rest:60},
+  {x:"rdl",s:3,r:"12",rest:60},
+  {x:"pushup",s:3,r:"6–12",rest:75},
+  {x:"row",s:3,r:"12",rest:60},
+  {x:"carry",s:3,r:"30 s / side",rest:45}]},
 R:{name:"Reset",focus:"Undo the day — hips, upper back, neck",min:11,items:[
   {x:"tspine",s:2,r:"60 s",rest:15},
   {x:"hipflex",s:2,r:"45 s / side",rest:15},
@@ -709,6 +733,7 @@ R:{name:"Reset",focus:"Undo the day — hips, upper back, neck",min:11,items:[
   {x:"hang",s:2,r:"30 s",rest:20}]}
 };
 const ORDER=["A","B","C","A","B","C","R"];
+const START_N=5;   // the starter week is the first five sessions you log
 const WAVE=[{n:"Groove",sm:0,rir:"stop 3 reps short"},
             {n:"Press", sm:0,rir:"stop 2 reps short"},
             {n:"Peak",  sm:1,rir:"stop 1 rep short"},
@@ -717,6 +742,7 @@ const WAVE=[{n:"Groove",sm:0,rir:"stop 3 reps short"},
 /* ---------------- badges ---------------- */
 const BADGE=[
  {i:"\u{1F331}",n:"Started",     d:"First session logged",              f:S=>S.done.length>=1},
+ {i:"\u{1F9ED}",n:"Foundation",  d:"Finished the five-exercise starter week", f:S=>S.done.length>=5},
  {i:"\u{1F501}",n:"Full cycle",  d:"All 7 sessions of the rotation",    f:S=>S.done.length>=7},
  {i:"\u{1F3AF}",n:"Perfect week",d:"Five sessions inside one week",     f:S=>maxWeekCount(S)>=5},
  {i:"\u{1F30A}",n:"Full wave",   d:"Groove to Deload without quitting", f:S=>S.done.length>=20},
@@ -746,9 +772,13 @@ function weekIdx(){
   return Math.max(0,Math.floor(d/7));
 }
 function wave(){return WAVE[weekIdx()%4]}
-function nextKey(){return ORDER[S.done.length%ORDER.length]}
+function nextKey(){
+  if(S.done.length<START_N)return "W";
+  return ORDER[(S.done.length-START_N)%ORDER.length];
+}
 function setsFor(it){
-  if(nextKey()==="R")return it.s;
+  const k=nextKey();
+  if(k==="R"||k==="W")return it.s;
   return Math.max(1,it.s+wave().sm);
 }
 
@@ -764,9 +794,10 @@ function renderToday(){
   const tot=ses.items.reduce(function(a,it){return a+setsFor(it)},0);
   const gt=ses.items.reduce(function(a,it){return a+((S.cur.m[it.x]||[]).filter(Boolean).length)},0);
   const pct=tot?gt/tot:0, C=2*Math.PI*19;
+  const isW=k==="W";
   document.getElementById("todayHead").innerHTML=
-    '<div class="row b"><span class="pill acc">Session '+k+'</span>'+
-    '<span class="pill">Week '+(weekIdx()+1)+' · '+w.n+'</span></div>'+
+    '<div class="row b"><span class="pill acc">'+(isW?"Starter week":"Session "+k)+'</span>'+
+    '<span class="pill">'+(isW?(S.done.length+1)+" of "+START_N:"Week "+(weekIdx()+1)+" · "+w.n)+'</span></div>'+
     '<div class="row" style="gap:13px;margin-top:13px">'+
       '<div class="ringw"><svg class="ring" viewBox="0 0 46 46">'+
       '<circle class="bgc" cx="23" cy="23" r="19"/>'+
@@ -779,7 +810,10 @@ function renderToday(){
        "Keep going — "+(tot-gt)+" to go.")+'</div></div>'+
     '</div>'+
     '<p style="font-size:14px;margin-top:11px">'+ses.focus+'</p>'+
-    '<p style="font-size:13.5px;color:var(--acc);margin-top:9px;font-weight:550">Every working set: '+w.rir+'.</p>'+
+    '<p style="font-size:13.5px;color:var(--acc);margin-top:9px;font-weight:550">Every working set: '+
+      (isW?"stop 3 reps short. Form first, nothing else":w.rir)+'.</p>'+
+    (isW?'<p class="hint">Same five movements every session this week. Once you have logged '+START_N+
+      ', the full rotation opens up on its own.</p>':'')+
     (doneToday?'<p class="hint">You already logged '+doneToday+' session'+(doneToday>1?'s':'')+' today. Doing another is fine — just not two hard ones.</p>':'');
 
   document.getElementById("exList").innerHTML=ses.items.map(function(it,i){
@@ -845,7 +879,7 @@ document.getElementById("resetProg").addEventListener("click",function(){
 });
 
 /* ---------------- keep the screen awake ---------------- */
-const BUILD="4";
+const BUILD="5";
 let wl=null,wlTold=false;
 function sessionLive(){return S.cur&&Object.keys(S.cur.m||{}).some(function(k){
   return (S.cur.m[k]||[]).some(Boolean)})}
