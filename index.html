@@ -68,6 +68,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .ex .body{border-top:1px solid var(--line);padding:12px 14px;display:none;background:#131820}
 .ex.open .body{display:block}
 .cue{font-size:13.5px;color:var(--dim);margin-bottom:10px}
+.trains{font-size:13px;color:var(--tx);background:#101a26;border:1px solid #25476b;
+  border-radius:9px;padding:8px 10px;margin-bottom:10px;line-height:1.4}
+.trains b{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--acc);margin-bottom:2px}
 .cue b{color:var(--tx);font-weight:600}
 
 .sets{display:flex;gap:7px;flex-wrap:wrap;margin:2px 0 12px}
@@ -494,94 +498,115 @@ ul.tick li b{color:var(--tx);font-weight:600}
 /* ---------------- exercise library ---------------- */
 const EX = {
 pullapart:{n:"Band Pull-Apart",t:"Warm-up",
+ m:"Rear shoulders and mid-back (rhomboids, rear delts)",
  s:"Heavy band, hands shoulder-width apart",
  c:"Arms straight out in front, band across your chest. Pull it apart until your knuckles are in line with your shoulders. <b>Squeeze, don't fling.</b>",
  h:"Take 3 seconds coming back in."},
 
 pushup:{n:"Push-Up",t:"Push",
+ m:"Chest, front shoulders, triceps — core holds the line",
  s:"On the floor, legs straight, hands under your shoulders",
  c:"Ribs down, glutes tight, body one line from head to heels. <b>Lower for 3 seconds</b>, chest to the floor, press. Elbows at about 45°, not flared out to the side.",
  h:"Feet up on a chair, or a band across your back."},
 
 ohp:{n:"Band Overhead Press",t:"Push",
+ m:"Shoulders and triceps. Not glutes — those only brace",
  s:"Heavy band under both feet, hands at your shoulders",
- c:"Press straight up without letting your ribs flare. <b>Squeeze your glutes</b> — that is what stops your lower back arching. Arms finish beside your ears.",
+ c:"Press straight up until your arms finish beside your ears. Keep your ribs down. <b>Brace your glutes and abs like a belt</b> — that is only to stop your lower back arching, it is not what the exercise trains.",
  h:"One arm at a time, same band."},
 
 pallof:{n:"Pallof Press",t:"Brace",
+ m:"Obliques and deep core. Arms only hold the band",
  s:"Band anchored at chest height to one side",
  c:"Press it straight out from your chest and <b>refuse to rotate</b>. The work is entirely in not moving. All reps one side, then turn round.",
  h:"Step further away from the anchor."},
 
 deadbug:{n:"Dead Bug",t:"Brace",
+ m:"Deep core — the muscles that stop your back arching",
  s:"On your back, arms straight up, knees over your hips",
  c:"Lower back <b>pressed flat</b> into the floor the whole time. Opposite arm and leg reach away slowly. If your back lifts off, you reached too far — shorten it.",
  h:"Straighten the reaching leg fully."},
 
 dislocate:{n:"Band Pass-Through",t:"Warm-up",
+ m:"Nothing. Pure shoulder mobility, no strength goal",
  s:"Light band, arms straight, hands wide",
  c:"Sweep the band from your thighs over your head to behind your back, and return. <b>Go as wide as you need</b> to keep your elbows locked straight.",
  h:"Pause 2 seconds behind you."},
 
 rdl:{n:"Band Romanian Deadlift",t:"Hinge",
+ m:"Hamstrings and glutes. This is your main glute exercise",
  s:"Heavy band under both feet, hands at your thighs",
  c:"<b>Push your hips backwards</b>, not down — knees stay softly bent. Feel it stretch in the hamstrings. Stop the moment your back would round.",
  h:"3 seconds lowering, no bounce."},
 
 row:{n:"Band Row",t:"Pull",
+ m:"Lats, mid-back, rear shoulders — biceps assist",
  s:"Heavy band round your feet, seated — or anchored at waist height",
  c:"Pull to your ribs, <b>elbows past your torso</b>, shoulder blades back and down. Two seconds on the way out.",
  h:"One arm at a time."},
 
 facepull:{n:"Face Pull",t:"Pull",
+ m:"Rear shoulders, rotator cuff, mid-back",
  s:"Medium band anchored above head height",
  c:"Pull towards your forehead, hands finishing <b>wider than your elbows</b>, thumbs pointing back. The direct antidote to a day spent leaning over a table.",
  h:"Hold 2 seconds at your forehead."},
 
 carry:{n:"Suitcase Carry",t:"Carry",
+ m:"Grip, obliques, traps — the whole trunk braced",
  s:"A loaded backpack or shopping bag in one hand",
  c:"Walk tall, <b>do not lean away from it</b>. Shoulders level. The single most transferable thing in the plan.",
  h:"Heavier bag, or walk 45 seconds."},
 
 squat:{n:"Band Front Squat",t:"Squat",
+ m:"Quads and glutes, core upright",
  s:"Heavy band under both feet, hands at your shoulders",
  c:"Sit down between your feet, <b>chest up</b>, as deep as you can without your back rounding. Knees track out over your toes.",
  h:"3 seconds down, 2 second pause at the bottom."},
 
 splitsquat:{n:"Split Squat",t:"Squat",
+ m:"Quads and glutes, one leg at a time — plus balance",
  s:"Long stance, hand on a wall only if you need it",
  c:"Back knee drops towards the floor. <b>Most of the weight on the front foot.</b> The one that carries straight over to stairs.",
  h:"Rear foot up on a chair."},
 
 bridge:{n:"Hip Bridge",t:"Hinge",
+ m:"Glutes, hamstrings assist. Feel it in the buttock",
  s:"Both feet flat, band over your hips",
- c:"Heels close to your backside, drive through the heels, <b>squeeze the glutes at the top</b> for two seconds. Ribs stay down.",
+ c:"Heels close enough that your fingertips just brush them — <b>too far away and you will feel this in your hamstrings instead of your glutes.</b> Tuck your pelvis under first, then drive through the heels and squeeze hard for two seconds at the top. Ribs stay down.",
  h:"One leg at a time, other knee hugged in."},
 
 calf:{n:"Calf Raise",t:"Squat",
+ m:"Calves — gastrocnemius and soleus",
  s:"Toes on the edge of a step",
  c:"All the way down for a stretch, all the way up, <b>one second pause at the top</b>. Slow, never bouncy.",
  h:"One leg at a time."},
 
 getup:{n:"Floor Get-Up",t:"Carry",
+ m:"Everything, coordinated. Hips, core, shoulders",
  s:"Lie down, stand up, lie back down",
  c:"Use your hands <b>as little as possible</b>. Alternate which leg leads. The thing that keeps people independent at eighty.",
  h:"No hands at all, or hold a bag."},
 
 latwalk:{n:"Band Lateral Walk",t:"Warm-up",
+ m:"Gluteus medius — the side of the hip",
  s:"Band round your ankles, quarter squat",
  c:"Step sideways and <b>keep the tension the whole way</b> — do not let your feet clack together.",
  h:"Heavier band, deeper squat."},
 
-tspine:{n:"Thoracic Opener",t:"Reset",s:"Rolled towel across your mid-back",
+tspine:{n:"Thoracic Opener",t:"Reset",
+ m:"Mobility only — upper back extension",s:"Rolled towel across your mid-back",
  c:"Hands behind your head, breathe, and let your upper back drape over the towel. Move it up and down a few centimetres to find the tight spots.",h:""},
-hipflex:{n:"Hip Flexor Stretch",t:"Reset",s:"Half-kneeling",
+hipflex:{n:"Hip Flexor Stretch",t:"Reset",
+ m:"Mobility only — hip flexors and quads",s:"Half-kneeling",
  c:"<b>Tuck your pelvis under first</b>, then ease forward. If you feel it in your lower back, you have not tucked.",h:""},
-squathold:{n:"Deep Squat Hold",t:"Reset",s:"Heels down if you can",
+squathold:{n:"Deep Squat Hold",t:"Reset",
+ m:"Mobility only — hips, ankles, lower back",s:"Heels down if you can",
  c:"Sit as deep as you can, elbows inside your knees. Hold a door frame if you need to.",h:""},
-neck:{n:"Neck & Upper Trap",t:"Reset",s:"Gentle — never force it",
+neck:{n:"Neck & Upper Trap",t:"Reset",
+ m:"Mobility only — neck and upper traps",s:"Gentle — never force it",
  c:"Ear towards your shoulder, opposite hand behind your back. This one is for the days spent looking down.",h:""},
-hang:{n:"Hang or Band Overhead Hold",t:"Reset",s:"Anything solid overhead",
+hang:{n:"Hang or Band Overhead Hold",t:"Reset",
+ m:"Decompression — shoulders, spine, grip",s:"Anything solid overhead",
  c:"Hang, or hold a band overhead with straight arms and lean back slightly. Decompresses everything a long list compresses.",h:""}
 };
 
@@ -828,6 +853,7 @@ function renderToday(){
       '</div>'+
       '<div class="body">'+
         figBlock(it.x)+
+        (e.m?'<div class="trains"><b>Trains</b>'+e.m+'</div>':"")+
         '<div class="cue">'+e.c+'</div>'+
         '<div class="sets">'+Array.from({length:n},function(_,j){
           return '<button class="set'+(marks[j]?" on":"")+'" data-s="'+j+'">'+(j+1)+'</button>'}).join("")+'</div>'+
@@ -879,7 +905,7 @@ document.getElementById("resetProg").addEventListener("click",function(){
 });
 
 /* ---------------- keep the screen awake ---------------- */
-const BUILD="5";
+const BUILD="6";
 let wl=null,wlTold=false;
 function sessionLive(){return S.cur&&Object.keys(S.cur.m||{}).some(function(k){
   return (S.cur.m[k]||[]).some(Boolean)})}
