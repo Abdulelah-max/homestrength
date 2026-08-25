@@ -283,7 +283,10 @@ ul.tick li b{color:var(--tx);font-weight:600}
   <div class="card">
     <h3>Your first week</h3>
     <p style="font-size:14px;margin-top:6px">You start with <b style="color:var(--tx)">five exercises, full
-    stop</b> — one session, repeated five times. Same five movements every time.</p>
+    stop</b> — one session, repeated on five separate days. Same five movements every time.</p>
+    <p style="font-size:14px;margin-top:9px">This part <b style="color:var(--tx)">waits for you</b>. Miss a
+    day and nothing is skipped — you stay on Foundation until five different days are logged. Only after
+    that does the calendar take charge.</p>
     <table style="margin-top:11px"><tbody>
       <tr><td><b>Band Front Squat</b></td><td class="n">3 × 12</td></tr>
       <tr><td><b>Band Romanian Deadlift</b></td><td class="n">3 × 12</td></tr>
@@ -794,21 +797,32 @@ const DW=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 // Mon-Fri train, Sat is Reset, Sun off.
 function dayKind(ds){const w=new Date(ds+"T12:00:00").getDay();
   return w===0?"rest":w===6?"reset":"train"}
-function weekdaysTo(ds){            // Mon-Fri days from S.start to ds, inclusive
-  if(!S.start)return 1;
-  const A=new Date(S.start+"T12:00:00"),B=new Date(ds+"T12:00:00");
+function weekdaysBetween(a,b){      // inclusive count of Mon-Fri days
+  const A=new Date(a+"T12:00:00"),B=new Date(b+"T12:00:00");
   if(B<A)return 0;
   const days=Math.round((B-A)/864e5)+1,full=Math.floor(days/7);
   let n=full*5,rem=days-full*7,d=A.getDay();
   for(let i=0;i<rem;i++){if(d>=1&&d<=5)n++;d=(d+1)%7}
   return n;
 }
+function weekdaysTo(ds){return S.start?weekdaysBetween(S.start,ds):1}
+
+// The starter week waits for you: it advances only when a Foundation
+// session is actually logged. Everything after it runs on the calendar.
+function foundationDays(){
+  const seen={},out=[];
+  S.done.forEach(function(d){if(d.s==="W"&&!seen[d.d]){seen[d.d]=1;out.push(d.d)}});
+  return out.sort();
+}
+function foundationLeft(){return Math.max(0,START_N-foundationDays().length)}
+function rotAnchor(){const f=foundationDays();return f.length>=START_N?f[START_N-1]:null}
+
 function sessionFor(ds){
-  const k=dayKind(ds);
-  if(k!=="train")return "R";        // Sat = Reset, Sun = Reset but optional
-  const n=weekdaysTo(ds);
-  if(n<=START_N)return "W";
-  return TRAIN[(n-START_N-1)%TRAIN.length];
+  if(dayKind(ds)!=="train")return "R";   // Sat = Reset, Sun = Reset but optional
+  const anchor=rotAnchor();
+  if(!anchor||ds<=anchor)return "W";
+  const n=weekdaysBetween(anchor,ds);    // anchor counts as 1
+  return TRAIN[(n-2)%TRAIN.length];
 }
 function doneOn(ds){return S.done.filter(function(d){return d.d===ds}).length}
 const WAVE=[{n:"Groove",sm:0,rir:"stop 3 reps short"},
@@ -888,7 +902,7 @@ function renderToday(){
 
   document.getElementById("todayHead").innerHTML=
     '<div class="row b"><span class="pill acc">'+(isW?"Starter week":"Session "+k)+'</span>'+
-    '<span class="pill">'+(isW?Math.min(weekdaysTo(today()),START_N)+" of "+START_N:"Week "+(weekIdx()+1)+" · "+w.n)+'</span></div>'+
+    '<span class="pill">'+(isW?Math.min(foundationDays().length+1,START_N)+" of "+START_N:"Week "+(weekIdx()+1)+" · "+w.n)+'</span></div>'+
     '<div class="row" style="gap:13px;margin-top:13px">'+
       '<div class="ringw"><svg class="ring" viewBox="0 0 46 46">'+
       '<circle class="bgc" cx="23" cy="23" r="19"/>'+
@@ -904,8 +918,8 @@ function renderToday(){
     '<p style="font-size:14px;margin-top:11px">'+ses.focus+'</p>'+
     '<p style="font-size:13.5px;color:var(--acc);margin-top:9px;font-weight:550">Every working set: '+
       (isW?"stop 3 reps short. Form first, nothing else":w.rir)+'.</p>'+
-    (isW?'<p class="hint">The same five movements on all five training days this week. The full rotation '+
-      'opens on its own after that.</p>':'')+
+    (isW?'<p class="hint">The same five movements until you have logged '+START_N+' of them. This part waits '+
+      'for you \u2014 miss a day and nothing is skipped. The calendar takes over afterwards.</p>':'')+
     cal;
 
   // Already trained today, or a scheduled rest day
@@ -990,7 +1004,7 @@ document.getElementById("resetProg").addEventListener("click",function(){
 });
 
 /* ---------------- keep the screen awake ---------------- */
-const BUILD="7";
+const BUILD="8";
 let wl=null,wlTold=false;
 function sessionLive(){return S.cur&&Object.keys(S.cur.m||{}).some(function(k){
   return (S.cur.m[k]||[]).some(Boolean)})}
