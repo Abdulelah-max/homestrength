@@ -1031,7 +1031,7 @@ document.getElementById("resetProg").addEventListener("click",function(){
 });
 
 /* ---------------- keep the screen awake ---------------- */
-const BUILD="9";
+const BUILD="10";
 let wl=null,wlTold=false;
 function sessionLive(){return S.cur&&Object.keys(S.cur.m||{}).some(function(k){
   return (S.cur.m[k]||[]).some(Boolean)})}
@@ -1209,7 +1209,7 @@ function renderLog(){
     '<div class="row b" style="font-size:14px"><span style="color:var(--dim)">Sets completed</span><b class="mono">'+totalSets+'</b></div>'+
     '<div class="row b" style="font-size:14px;margin-top:7px"><span style="color:var(--dim)">Best week</span><b class="mono">'+bestW+' sessions</b></div>'+
     '<div class="row b" style="font-size:14px;margin-top:7px"><span style="color:var(--dim)">Average per session</span><b class="mono">'+avg+' sets</b></div>'+
-    '<div class="row b" style="font-size:14px;margin-top:7px"><span style="color:var(--dim)">Training since</span><b class="mono">'+days+' days</b></div>'+
+    '<div class="row b" style="font-size:14px;margin-top:7px"><span style="color:var(--dim)">Training for</span><b class="mono">'+days+(days===1?' day':' days')+'</b></div>'+
     '<div class="sep"></div><p class="hint">Every one of those sets is work your back, hips and grip did not do before. The plan gets harder on its own \u2014 same exercises, more sets, fewer reps left in the tank.</p>');
 
   /* --- badges: icon + label, never colour alone --- */
