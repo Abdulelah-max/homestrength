@@ -169,6 +169,26 @@ ul.tick li b{color:var(--tx);font-weight:600}
 .figw.end .cap{color:var(--acc)}
 .figar{flex:0 0 14px;color:var(--dim2);font-size:15px;line-height:1}
 
+/* week calendar */
+.cal{display:flex;gap:4px;margin-top:13px}
+.cal>div{flex:1;min-width:0;border-radius:9px;border:1px solid var(--line);background:var(--panel2);
+  padding:6px 1px 5px;text-align:center}
+.cal .dw{font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--dim2)}
+.cal .dn{font-size:13px;font-weight:700;line-height:1.25;font-variant-numeric:tabular-nums}
+.cal .ds{font-size:9.5px;font-weight:700;margin-top:1px;color:var(--dim2)}
+.cal .t{border-color:var(--acc);background:#12243a}
+.cal .t .ds{color:var(--acc)}
+.cal .k{border-color:#1f5340;background:#0f2a21}
+.cal .k .ds,.cal .k .dn{color:var(--ok)}
+.cal .m{opacity:.4}
+.cal .o .dn{color:var(--dim2)}
+.calk{display:flex;gap:11px;justify-content:center;margin-top:9px;font-size:10.5px;color:var(--dim2)}
+.calk b{font-weight:700}
+
+.doneday{background:#0f2a21;border:1px solid #1f5340;border-radius:12px;padding:14px;text-align:center}
+.doneday .bg{font-size:30px;line-height:1}
+.doneday h3{color:var(--ok);margin-top:6px}
+
 /* progress ring */
 .ring{width:46px;height:46px;flex:0 0 46px;transform:rotate(-90deg)}
 .ring circle{fill:none;stroke-width:5;stroke-linecap:round}
@@ -244,6 +264,7 @@ ul.tick li b{color:var(--tx);font-weight:600}
 <!-- ============ TODAY ============ -->
 <div class="view on" id="v-today"><div class="wrap">
   <div class="card" id="todayHead"></div>
+  <div id="dayBanner"></div>
   <div id="exList"></div>
   <button class="btn pri full" id="finishBtn" style="margin-top:6px">Finish session</button>
   <p class="hint" id="finishHint"></p>
@@ -253,8 +274,8 @@ ul.tick li b{color:var(--tx);font-weight:600}
 <div class="view" id="v-plan"><div class="wrap">
   <div class="card">
     <h3>How this works</h3>
-    <p style="font-size:14px;margin-top:6px">Week one is five exercises, repeated. After that: five short
-    sessions a week, drawn from a rolling seven-session cycle.
+    <p style="font-size:14px;margin-top:6px">Every day has a fixed job. Monday to Friday you train,
+    Saturday is Reset, Sunday is free.
     Every session trains the whole body through the six patterns daily life actually asks for:
     <b style="color:var(--tx)">hinge, squat, push, pull, carry, brace</b>.</p>
   </div>
@@ -270,22 +291,24 @@ ul.tick li b{color:var(--tx);font-weight:600}
       <tr><td><b>Band Row</b></td><td class="n">3 × 12</td></tr>
       <tr><td><b>Suitcase Carry</b></td><td class="n">3 × 30 s</td></tr>
     </tbody></table>
-    <p class="hint">Squat, hinge, push, pull, carry — the five things everything else is built from. Sixteen
-    exercises in week one means sixteen things done roughly. Five means five done properly, and by Friday
-    they are automatic. The full rotation opens by itself once you have logged five sessions, so a missed
-    day costs you nothing.</p>
+    <p class="hint">Squat, hinge, push, pull, carry — the five patterns everything else is built on.
+    Sixteen exercises in week one means sixteen things done roughly; five means five done properly. The full
+    rotation opens by itself after the first five training days.</p>
   </div>
 
   <div class="card">
-    <h3>The week — from week two</h3>
-    <div class="wk">
-      <div class="A">A</div><div class="B">B</div><div class="C">C</div>
-      <div class="A">A</div><div class="B">B</div><div class="C">C</div><div class="R">R</div>
-    </div>
-    <small>A Push &amp; Brace · B Pull &amp; Hinge · C Legs &amp; Carry · R Reset</small>
-    <p class="hint">Seven sessions per cycle, each pattern twice, legs never shortchanged. At five sessions a
-    week the cycle rolls through in about eight days — which is the point. The rotation follows what you
-    <i>did</i>, not the calendar. Miss Tuesday and Wednesday simply becomes the session you missed.</p>
+    <h3>The week</h3>
+    <table style="margin-top:9px"><tbody>
+      <tr><td><b>Mon – Fri</b></td><td class="n">Training</td></tr>
+      <tr><td><b>Sat</b></td><td class="n">Reset</td></tr>
+      <tr><td><b>Sun</b></td><td class="n">off</td></tr>
+    </tbody></table>
+    <p class="hint">A, B and C roll across the weekdays instead of being stuck to one day. A six-day cycle
+    over five training days means everything shifts by one each week, so across two weeks each session gets
+    exactly the same share. Without that, legs would quietly lose out.</p>
+    <p class="hint" style="margin-top:9px"><b style="color:var(--warn)">What this costs you:</b> a missed day
+    is simply gone. Skipping Tuesday does not push everything back — Wednesday brings its own session. That
+    is the trade for letting the calendar decide.</p>
   </div>
 
   <div class="card">
@@ -333,6 +356,13 @@ ul.tick li b{color:var(--tx);font-weight:600}
   </div>
 
   <button class="btn gho full" id="resetProg" style="margin-top:4px;color:var(--hot)">Reset all progress</button>
+  <div class="card" style="margin-top:14px">
+    <h3>Plan start</h3>
+    <p style="font-size:14px;margin-top:6px">The calendar counts from <b style="color:var(--tx)" id="startS">—</b>.
+    That is what decides where you are in the starter week.</p>
+    <button class="btn full" id="restartPlan" style="margin-top:11px">Restart the plan from today</button>
+    <p class="hint">Sets the start date to today and clears the log. Exercises and the weekly plan stay as they are.</p>
+  </div>
   <p class="hint" style="text-align:center;margin-top:12px">Version <b style="color:var(--dim)" id="verS">—</b>
   · updates itself when you open it online</p>
 </div></div>
@@ -757,8 +787,30 @@ R:{name:"Reset",focus:"Undo the day — hips, upper back, neck",min:11,items:[
   {x:"neck",s:2,r:"30 s / side",rest:10},
   {x:"hang",s:2,r:"30 s",rest:20}]}
 };
-const ORDER=["A","B","C","A","B","C","R"];
-const START_N=5;   // the starter week is the first five sessions you log
+const START_N=5;          // the starter week is the first five training days
+const TRAIN=["A","B","C","A","B","C"];   // rolls across weekdays -> each gets equal share
+const DW=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+// Mon-Fri train, Sat is Reset, Sun off.
+function dayKind(ds){const w=new Date(ds+"T12:00:00").getDay();
+  return w===0?"rest":w===6?"reset":"train"}
+function weekdaysTo(ds){            // Mon-Fri days from S.start to ds, inclusive
+  if(!S.start)return 1;
+  const A=new Date(S.start+"T12:00:00"),B=new Date(ds+"T12:00:00");
+  if(B<A)return 0;
+  const days=Math.round((B-A)/864e5)+1,full=Math.floor(days/7);
+  let n=full*5,rem=days-full*7,d=A.getDay();
+  for(let i=0;i<rem;i++){if(d>=1&&d<=5)n++;d=(d+1)%7}
+  return n;
+}
+function sessionFor(ds){
+  const k=dayKind(ds);
+  if(k!=="train")return "R";        // Sat = Reset, Sun = Reset but optional
+  const n=weekdaysTo(ds);
+  if(n<=START_N)return "W";
+  return TRAIN[(n-START_N-1)%TRAIN.length];
+}
+function doneOn(ds){return S.done.filter(function(d){return d.d===ds}).length}
 const WAVE=[{n:"Groove",sm:0,rir:"stop 3 reps short"},
             {n:"Press", sm:0,rir:"stop 2 reps short"},
             {n:"Peak",  sm:1,rir:"stop 1 rep short"},
@@ -787,6 +839,7 @@ function earned(st){return BADGE.filter(b=>b.f(st))}
 const KEY="ds1";
 const DEF={start:null,done:[],cur:null,food:{w:80,h:175,a:35,s:"m",act:"1.5",goal:"1"}};
 let S=load();
+if(!S.start){S.start=new Date().toISOString().slice(0,10);save()}
 function load(){try{return Object.assign({},DEF,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){return Object.assign({},DEF)}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const today=()=>new Date().toISOString().slice(0,10);
@@ -797,10 +850,7 @@ function weekIdx(){
   return Math.max(0,Math.floor(d/7));
 }
 function wave(){return WAVE[weekIdx()%4]}
-function nextKey(){
-  if(S.done.length<START_N)return "W";
-  return ORDER[(S.done.length-START_N)%ORDER.length];
-}
+function nextKey(){return sessionFor(today())}
 function setsFor(it){
   const k=nextKey();
   if(k==="R"||k==="W")return it.s;
@@ -810,19 +860,35 @@ function setsFor(it){
 /* ---------------- today view ---------------- */
 function renderToday(){
   const k=nextKey(),ses=SESSIONS[k],w=wave();
-  if(!S.cur||S.cur.k!==k){S.cur={k:k,m:{}};save()}
+  if(!S.cur||S.cur.k!==k||S.cur.d!==today()){S.cur={k:k,d:today(),m:{}};save()}
 
   document.getElementById("hTitle").textContent=ses.name;
   document.getElementById("hSub").textContent="~"+ses.min+" min";
 
-  const doneToday=S.done.filter(d=>d.d===today()).length;
   const tot=ses.items.reduce(function(a,it){return a+setsFor(it)},0);
   const gt=ses.items.reduce(function(a,it){return a+((S.cur.m[it.x]||[]).filter(Boolean).length)},0);
   const pct=tot?gt/tot:0, C=2*Math.PI*19;
-  const isW=k==="W";
+  const isW=k==="W", td=today(), kind=dayKind(td), doneToday2=doneOn(td);
+
+  // Monday-first strip for the current week
+  const mon=new Date(td+"T12:00:00");mon.setDate(mon.getDate()-((mon.getDay()+6)%7));
+  let cal='<div class="cal">';
+  for(let i=0;i<7;i++){
+    const dd=new Date(mon);dd.setDate(dd.getDate()+i);
+    const ds=dd.toISOString().slice(0,10), kk=dayKind(ds), sk=sessionFor(ds);
+    const isToday=ds===td, did=doneOn(ds)>0, past=ds<td;
+    const cls=did?"k":isToday?"t":kk==="rest"?"o":(past&&kk!=="rest")?"m":"";
+    const lab=did?"\u2713":kk==="rest"?"\u2014":sk==="W"?"F":sk;
+    cal+='<div class="'+cls+'"><div class="dw">'+DW[dd.getDay()]+'</div>'+
+         '<div class="dn">'+dd.getDate()+'</div><div class="ds">'+lab+'</div></div>';
+  }
+  cal+='</div><div class="calk"><span><b style="color:var(--ok)">\u2713</b> done</span>'+
+       '<span><b>F</b> Foundation</span><span><b>R</b> Reset</span>'+
+       '<span><b>\u2014</b> off</span></div>';
+
   document.getElementById("todayHead").innerHTML=
     '<div class="row b"><span class="pill acc">'+(isW?"Starter week":"Session "+k)+'</span>'+
-    '<span class="pill">'+(isW?(S.done.length+1)+" of "+START_N:"Week "+(weekIdx()+1)+" · "+w.n)+'</span></div>'+
+    '<span class="pill">'+(isW?Math.min(weekdaysTo(today()),START_N)+" of "+START_N:"Week "+(weekIdx()+1)+" · "+w.n)+'</span></div>'+
     '<div class="row" style="gap:13px;margin-top:13px">'+
       '<div class="ringw"><svg class="ring" viewBox="0 0 46 46">'+
       '<circle class="bgc" cx="23" cy="23" r="19"/>'+
@@ -830,16 +896,35 @@ function renderToday(){
       '</svg><span>'+Math.round(pct*100)+'</span></div>'+
       '<div class="grow"><b style="font-size:14.5px">'+gt+' of '+tot+' sets</b>'+
       '<div style="font-size:13px;color:var(--dim2)">'+
-      (gt===0?"Nothing done yet. Open the first exercise.":
+      (doneOn(today())>0?"Today is already logged. This one is a bonus.":
+       gt===0?"Nothing done yet. Open the first exercise.":
        gt>=tot?"Every set ticked. Hit finish.":
        "Keep going — "+(tot-gt)+" to go.")+'</div></div>'+
     '</div>'+
     '<p style="font-size:14px;margin-top:11px">'+ses.focus+'</p>'+
     '<p style="font-size:13.5px;color:var(--acc);margin-top:9px;font-weight:550">Every working set: '+
       (isW?"stop 3 reps short. Form first, nothing else":w.rir)+'.</p>'+
-    (isW?'<p class="hint">Same five movements every session this week. Once you have logged '+START_N+
-      ', the full rotation opens up on its own.</p>':'')+
-    (doneToday?'<p class="hint">You already logged '+doneToday+' session'+(doneToday>1?'s':'')+' today. Doing another is fine — just not two hard ones.</p>':'');
+    (isW?'<p class="hint">The same five movements on all five training days this week. The full rotation '+
+      'opens on its own after that.</p>':'')+
+    cal;
+
+  // Already trained today, or a scheduled rest day
+  const banner=document.getElementById("dayBanner");
+  if(doneToday2>0){
+    banner.innerHTML='<div class="doneday"><div class="bg">\u2705</div>'+
+      '<h3>Done for today</h3><p style="font-size:13.5px;margin-top:4px">'+
+      new Date(td+"T12:00:00").toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})+
+      ' \u00b7 '+ses.name+' ticked off. Next up: '+
+      (function(){const n=new Date(td+"T12:00:00");n.setDate(n.getDate()+1);
+        const nd=n.toISOString().slice(0,10);
+        return DW[n.getDay()]+" \u2014 "+(dayKind(nd)==="rest"?"a day off":SESSIONS[sessionFor(nd)].name)})()+
+      '.</p><p class="hint" style="margin-top:8px">Another session is fine, but nothing needs it.</p></div>';
+  } else if(kind==="rest"){
+    banner.innerHTML='<div class="card" style="text-align:center"><div style="font-size:28px">\u{1F634}</div>'+
+      '<h3 style="margin-top:6px">Sunday \u2014 off</h3>'+
+      '<p style="font-size:13.5px;margin-top:4px">A rest day in the plan. The Reset session below is there '+
+      'if you want it, but it is not required.</p></div>';
+  } else banner.innerHTML='';
 
   document.getElementById("exList").innerHTML=ses.items.map(function(it,i){
     const e=EX[it.x],n=setsFor(it),marks=S.cur.m[it.x]||[],
@@ -905,7 +990,7 @@ document.getElementById("resetProg").addEventListener("click",function(){
 });
 
 /* ---------------- keep the screen awake ---------------- */
-const BUILD="6";
+const BUILD="7";
 let wl=null,wlTold=false;
 function sessionLive(){return S.cur&&Object.keys(S.cur.m||{}).some(function(k){
   return (S.cur.m[k]||[]).some(Boolean)})}
@@ -1124,6 +1209,16 @@ document.querySelectorAll("nav button").forEach(function(b){
 });
 
 document.getElementById("verS").textContent=BUILD;
+document.getElementById("restartPlan").addEventListener("click",function(){
+  if(!confirm("Restart the plan from today? This clears the log."))return;
+  S.start=today();S.done=[];S.cur=null;save();
+  renderToday();renderLog();
+  document.getElementById("startS").textContent=
+    new Date(S.start+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  toast("Plan restarted from today");
+});
+document.getElementById("startS").textContent=S.start?
+  new Date(S.start+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}):"today";
 renderToday();renderFood();renderLog();
 if("serviceWorker" in navigator){
   const hadCtl=!!navigator.serviceWorker.controller;
