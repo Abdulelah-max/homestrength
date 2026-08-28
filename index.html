@@ -74,11 +74,11 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   text-transform:uppercase;color:var(--acc);margin-bottom:2px}
 .cue b{color:var(--tx);font-weight:600}
 
-.sets{display:flex;gap:7px;flex-wrap:wrap;margin:2px 0 12px}
-.set{width:46px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);
-  display:grid;place-items:center;font-size:13px;font-weight:650;color:var(--dim);transition:.12s}
+.sets{margin:2px 0 12px}
+.set{width:100%;height:46px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);
+  display:grid;place-items:center;font-size:14px;font-weight:650;color:var(--dim);transition:.12s}
 .set.on{background:#0f2a21;border-color:var(--ok);color:var(--ok)}
-.set:active{transform:scale(.94)}
+.set:active{transform:scale(.98)}
 
 .ladder{margin-top:10px;border-top:1px solid var(--line);padding-top:10px;font-size:13.5px;color:var(--dim)}
 .ladder .hh{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
@@ -91,17 +91,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .step.cur .dot{background:var(--acc);box-shadow:0 0 0 3px #12243a}
 .step.past{color:var(--dim2)}
 .step.past .dot{background:#1f5340}
-
-/* timer */
-#timer{position:fixed;left:0;right:0;bottom:calc(60px + var(--safe-b));z-index:30;
-  display:none;padding:0 12px}
-#timer.on{display:block}
-#timer .in{max-width:596px;margin:0 auto;background:var(--acc);color:#04121f;border-radius:13px;
-  padding:11px 15px;display:flex;align-items:center;gap:12px;font-weight:700;
-  box-shadow:0 8px 28px rgba(0,0,0,.5)}
-#timer .t{font-size:22px;letter-spacing:-.02em}
-#timer .bar{flex:1;height:5px;background:rgba(4,18,31,.22);border-radius:3px;overflow:hidden}
-#timer .bar i{display:block;height:100%;background:#04121f;transition:width .95s linear}
 
 /* nav */
 nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(14,17,22,.94);
@@ -282,6 +271,8 @@ ul.tick li b{color:var(--tx);font-weight:600}
     Saturday is Reset, Sunday is free.
     Every session trains the whole body through the six patterns daily life actually asks for:
     <b style="color:var(--tx)">hinge, squat, push, pull, carry, brace</b>.</p>
+    <p style="font-size:14px;margin-top:9px">Each exercise has <b style="color:var(--tx)">one button</b>. Read
+    it, do all the sets in your own time, then tick it off. No timer, nothing counting at you.</p>
   </div>
 
   <div class="card">
@@ -295,10 +286,10 @@ ul.tick li b{color:var(--tx);font-weight:600}
       <tr><td><b>Band Front Squat</b></td><td class="n">3 × 12</td></tr>
       <tr><td><b>Band Romanian Deadlift</b></td><td class="n">3 × 12</td></tr>
       <tr><td><b>Push-Up</b></td><td class="n">3 × 6–12</td></tr>
-      <tr><td><b>Band Row</b></td><td class="n">3 × 12</td></tr>
-      <tr><td><b>Suitcase Carry</b></td><td class="n">3 × 30 s</td></tr>
+      <tr><td><b>One-Arm Bent-Over Row</b></td><td class="n">3 × 10 / side</td></tr>
+      <tr><td><b>Side Plank</b></td><td class="n">3 × 30 s / side</td></tr>
     </tbody></table>
-    <p class="hint">Squat, hinge, push, pull, carry — the five patterns everything else is built on.
+    <p class="hint">Squat, hinge, push, pull, brace — the five patterns everything else is built on.
     Sixteen exercises in week one means sixteen things done roughly; five means five done properly. The full
     rotation opens by itself after the first five training days.</p>
   </div>
@@ -346,7 +337,7 @@ ul.tick li b{color:var(--tx);font-weight:600}
   <div class="card">
     <h3>What "strength for daily tasks" means here</h3>
     <table><tbody>
-      <tr><td>Carrying shopping, a case, a child</td><td class="n">carries, rows</td></tr>
+      <tr><td>Carrying shopping, a case, a child</td><td class="n">rows, side plank</td></tr>
       <tr><td>Lifting from the floor without your back</td><td class="n">hinge</td></tr>
       <tr><td>Stairs, standing a long list</td><td class="n">split squat, calves</td></tr>
       <tr><td>Getting up off the floor</td><td class="n">get-up</td></tr>
@@ -532,12 +523,6 @@ ul.tick li b{color:var(--tx);font-weight:600}
 
 <div id="toast"><div id="toastT"></div></div>
 
-<div id="timer"><div class="in">
-  <span class="t mono" id="tmT">0:00</span>
-  <div class="bar"><i id="tmBar"></i></div>
-  <button id="tmSkip" style="font-weight:700;font-size:13px">SKIP</button>
-</div></div>
-
 <nav><div class="in">
   <button class="on" data-v="today"><svg viewBox="0 0 24 24"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg>Today</button>
   <button data-v="plan"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/><circle cx="19" cy="19" r="2"/></svg>Plan</button>
@@ -591,11 +576,11 @@ rdl:{n:"Band Romanian Deadlift",t:"Hinge",
  c:"<b>Push your hips backwards</b>, not down — knees stay softly bent. Feel it stretch in the hamstrings. Stop the moment your back would round.",
  h:"3 seconds lowering, no bounce."},
 
-row:{n:"Band Row",t:"Pull",
+row:{n:"One-Arm Bent-Over Row",t:"Pull",
  m:"Lats, mid-back, rear shoulders — biceps assist",
- s:"Heavy band round your feet, seated — or anchored at waist height",
- c:"Pull to your ribs, <b>elbows past your torso</b>, shoulder blades back and down. Two seconds on the way out.",
- h:"One arm at a time."},
+ s:"Stand on the band with the foot on your pulling side, other foot a step forward, free hand on a chair back",
+ c:"Hinge forward until your back is nearly flat, free hand carrying some of your weight. Pull to your ribs, <b>elbow past your torso</b>, two seconds on the way back out. <b>Wrap the band round your hand until the last two reps are genuinely hard</b> — shortening the band is how you load it, not pulling faster.",
+ h:"One more wrap round your hand."},
 
 facepull:{n:"Face Pull",t:"Pull",
  m:"Rear shoulders, rotator cuff, mid-back",
@@ -603,11 +588,11 @@ facepull:{n:"Face Pull",t:"Pull",
  c:"Pull towards your forehead, hands finishing <b>wider than your elbows</b>, thumbs pointing back. The direct antidote to a day spent leaning over a table.",
  h:"Hold 2 seconds at your forehead."},
 
-carry:{n:"Suitcase Carry",t:"Carry",
- m:"Grip, obliques, traps — the whole trunk braced",
- s:"A loaded backpack or shopping bag in one hand",
- c:"Walk tall, <b>do not lean away from it</b>. Shoulders level. The single most transferable thing in the plan.",
- h:"Heavier bag, or walk 45 seconds."},
+sideplank:{n:"Side Plank",t:"Brace",
+ m:"Obliques and the whole side of the trunk — what stops you buckling sideways",
+ s:"On your side, elbow straight under your shoulder, feet stacked",
+ c:"Lift your hips until <b>shoulder, hip and ankle sit in one straight line</b>, and hold there breathing normally. When the hips start to sag the set is finished — put them down rather than hanging on. Knees down instead of feet if the full version pulls you out of line.",
+ h:"Lift your top arm and top leg, or add 15 seconds."},
 
 squat:{n:"Band Front Squat",t:"Squat",
  m:"Quads and glutes, core upright",
@@ -680,7 +665,8 @@ const BODY={
  bridgU:{hd:[18,80],nk:[27,82],pv:[57,68],kn:[[71,60],[71,60]],an:[[80,86],[80,86]]},
  hkneel:{hd:[48,20],nk:[48,30],pv:[48,58],kn:[[34,72],[62,88]],an:[[30,90],[76,90]]},
  hkneeX:{hd:[44,18],nk:[45,28],pv:[50,57],kn:[[34,71],[66,88]],an:[[30,90],[82,90]]},
- seated:{hd:[31,25],nk:[34,35],pv:[39,64],kn:[[64,63],[64,63]],an:[[74,88],[74,88]]},
+ sideDn:{hd:[16,62],nk:[26,66],pv:[55,88],kn:[[72,91],[72,91]],an:[[88,94],[88,94]]},
+ sideUp:{hd:[16,62],nk:[26,66],pv:[55,78],kn:[[72,86],[72,86]],an:[[88,94],[88,94]]},
  deepSq:{hd:[50,41],nk:[50,49],pv:[50,68],kn:[[35,64],[65,64]],an:[[41,90],[59,90]]},
  calfU :{hd:[50,7],nk:[50,17],pv:[50,45],kn:[[46,64],[54,64]],an:[[46,84],[54,84]]},
  lieFla:{hd:[16,80],nk:[25,83],pv:[55,85],kn:[[72,85],[72,85]],an:[[86,86],[86,86]]},
@@ -700,14 +686,14 @@ const ARM={
  pallB :[-17,10,-31,10, -17,13,-31,13],
  fpA   :[-11,-6,-20,-15, 11,-6, 20,-15],
  fpB   :[-17,-4,-8,-13, 17,-4, 8,-13],
- carry :[-8,14,-8,32, 8,14, 8,27],
+ sideA :[-4,26,-15,29, 8,10,18,16],
  plankA:[0,18,0,36, 0,18,0,36],
  plankB:[-9,10,0,20, -9,10,0,20],
  dbA   :[0,-14,0,-27, 5,-14,5,-27],
  dbB   :[-11,-12,-22,-17, 4,-14,4,-27],
  hdown :[4,18,7,35, 7,18,10,35],
- srowA :[15,7,30,13, 15,10,30,16],
- srowB :[3,12,13,16, 3,15,13,19],
+ browA :[3,18,6,34, -8,14,-16,26],
+ browB :[6,0,1,10, -8,14,-16,26],
  bdown :[10,5,21,6, 10,8,21,9],
  flat  :[11,3,23,3, 11,6,23,6]
 };
@@ -750,9 +736,9 @@ const FIG={
  deadbug  :{a:{b:"supine",m:"dbA"},z:{b:"supinX",m:"dbB"},la:"Loaded",lz:"Reach away"},
  dislocate:{a:{b:"stand",m:"front"},z:{b:"stand",m:"over"},bd:"hn-hn",la:"In front",lz:"Overhead"},
  rdl      :{a:{b:"stand",m:"down"},z:{b:"hingeB",m:"hdown"},bd:"ank-hn",la:"Tall",lz:"Hips back"},
- row      :{a:{b:"seated",m:"srowA"},z:{b:"seated",m:"srowB"},bd:"ank-hn",la:"Arms long",lz:"Elbows past"},
+ row      :{a:{b:"hingeB",m:"browA"},z:{b:"hingeB",m:"browB"},bd:"ank-hn1",la:"Arm long",lz:"Elbow past your ribs"},
  facepull :{a:{b:"stand",m:"fpA"},z:{b:"stand",m:"fpB"},bd:"top-hn",la:"Reach up",lz:"To forehead"},
- carry    :{a:{b:"stand",m:"carry",prop:"box"},z:{b:"lungeU",m:"carry",prop:"box"},la:"Stand tall",lz:"Walk, no lean"},
+ sideplank:{a:{b:"sideDn",m:"sideA"},z:{b:"sideUp",m:"sideA"},la:"Hips down",lz:"One straight line"},
  squat    :{a:{b:"wideF",m:"rack"},z:{b:"squatB",m:"rack"},bd:"ank-hn",la:"Stand",lz:"Sit between feet"},
  splitsquat:{a:{b:"lungeU",m:"down"},z:{b:"lungeD",m:"down"},la:"Long stance",lz:"Back knee down"},
  bridge   :{a:{b:"bridgD",m:"bdown"},z:{b:"bridgU",m:"bdown"},la:"Hips down",lz:"Squeeze at top"},
@@ -782,12 +768,12 @@ A:{name:"Push & Brace",focus:"Chest, shoulders, triceps, anti-rotation",min:22,i
   {x:"ohp",s:3,r:"10–12",rest:60},
   {x:"pallof",s:3,r:"10 / side",rest:45},
   {x:"deadbug",s:2,r:"8 / side",rest:30}]},
-B:{name:"Pull & Hinge",focus:"Back, hamstrings, glutes, grip",min:23,items:[
+B:{name:"Pull & Hinge",focus:"Back, hamstrings, glutes, obliques",min:23,items:[
   {x:"dislocate",s:2,r:"10",rest:20},
   {x:"rdl",s:3,r:"12–15",rest:60},
-  {x:"row",s:4,r:"10–12",rest:60},
+  {x:"row",s:3,r:"10 / side",rest:60},
   {x:"facepull",s:3,r:"15",rest:45},
-  {x:"carry",s:3,r:"per side",rest:45}]},
+  {x:"sideplank",s:3,r:"30 s / side",rest:45}]},
 C:{name:"Legs & Carry",focus:"Quads, glutes, calves, getting off the floor",min:24,items:[
   {x:"latwalk",s:2,r:"12 / side",rest:30},
   {x:"squat",s:4,r:"12–15",rest:60},
@@ -795,12 +781,12 @@ C:{name:"Legs & Carry",focus:"Quads, glutes, calves, getting off the floor",min:
   {x:"bridge",s:3,r:"10–12",rest:45},
   {x:"calf",s:3,r:"15–20",rest:40},
   {x:"getup",s:2,r:"3 / side",rest:45}]},
-W:{name:"Foundation",focus:"Five movements, learned properly — squat, hinge, push, pull, carry",min:23,items:[
+W:{name:"Foundation",focus:"Five movements, learned properly — squat, hinge, push, pull, brace",min:23,items:[
   {x:"squat",s:3,r:"12",rest:60},
   {x:"rdl",s:3,r:"12",rest:60},
   {x:"pushup",s:3,r:"6–12",rest:75},
-  {x:"row",s:3,r:"12",rest:60},
-  {x:"carry",s:3,r:"30 s / side",rest:45}]},
+  {x:"row",s:3,r:"10 / side",rest:60},
+  {x:"sideplank",s:3,r:"30 s / side",rest:45}]},
 R:{name:"Reset",focus:"Undo the day — hips, upper back, neck",min:11,items:[
   {x:"tspine",s:2,r:"60 s",rest:15},
   {x:"hipflex",s:2,r:"45 s / side",rest:15},
@@ -884,6 +870,10 @@ function weekIdx(){
 }
 function wave(){return WAVE[weekIdx()%4]}
 function nextKey(){return sessionFor(today())}
+function exDone(it){
+  const n=setsFor(it);
+  return ((S.cur&&S.cur.m[it.x])||[]).filter(Boolean).length>=n;
+}
 function setsFor(it){
   const k=nextKey();
   if(k==="R"||k==="W")return it.s;
@@ -898,8 +888,8 @@ function renderToday(){
   document.getElementById("hTitle").textContent=ses.name;
   document.getElementById("hSub").textContent="~"+ses.min+" min";
 
-  const tot=ses.items.reduce(function(a,it){return a+setsFor(it)},0);
-  const gt=ses.items.reduce(function(a,it){return a+((S.cur.m[it.x]||[]).filter(Boolean).length)},0);
+  const tot=ses.items.length;
+  const gt=ses.items.filter(exDone).length;
   const pct=tot?gt/tot:0, C=2*Math.PI*19;
   const isW=k==="W", td=today(), kind=dayKind(td), doneToday2=doneOn(td);
 
@@ -927,11 +917,11 @@ function renderToday(){
       '<circle class="bgc" cx="23" cy="23" r="19"/>'+
       '<circle class="fgc" cx="23" cy="23" r="19" stroke-dasharray="'+(C*pct).toFixed(1)+' '+C.toFixed(1)+'"/>'+
       '</svg><span>'+Math.round(pct*100)+'</span></div>'+
-      '<div class="grow"><b style="font-size:14.5px">'+gt+' of '+tot+' sets</b>'+
+      '<div class="grow"><b style="font-size:14.5px">'+gt+' of '+tot+' exercises</b>'+
       '<div style="font-size:13px;color:var(--dim2)">'+
       (doneOn(today())>0?"Today is already logged. This one is a bonus.":
        gt===0?"Nothing done yet. Open the first exercise.":
-       gt>=tot?"Every set ticked. Hit finish.":
+       gt>=tot?"All of them ticked. Hit finish.":
        "Keep going — "+(tot-gt)+" to go.")+'</div></div>'+
     '</div>'+
     '<p style="font-size:14px;margin-top:11px">'+ses.focus+'</p>'+
@@ -960,8 +950,7 @@ function renderToday(){
   } else banner.innerHTML='';
 
   document.getElementById("exList").innerHTML=ses.items.map(function(it,i){
-    const e=EX[it.x],n=setsFor(it),marks=S.cur.m[it.x]||[],
-          done=marks.filter(Boolean).length>=n;
+    const e=EX[it.x],n=setsFor(it),done=exDone(it);
     return '<div class="ex'+(done?' done':'')+'" data-x="'+it.x+'">'+
       '<div class="hd" data-t="1">'+
         '<div class="num">'+(done?"✓":i+1)+'</div>'+
@@ -973,17 +962,15 @@ function renderToday(){
         figBlock(it.x)+
         (e.m?'<div class="trains"><b>Trains</b>'+e.m+'</div>':"")+
         '<div class="cue">'+e.c+'</div>'+
-        '<div class="sets">'+Array.from({length:n},function(_,j){
-          return '<button class="set'+(marks[j]?" on":"")+'" data-s="'+j+'">'+(j+1)+'</button>'}).join("")+'</div>'+
+        '<div class="sets"><button class="set'+(done?" on":"")+'">'+
+          (done?"\u2713 Done":"Mark done")+'</button></div>'+
         (e.h?'<div class="ladder"><b class="hh">When it gets easy</b>'+e.h+'</div>':"")+
       '</div></div>';
   }).join("");
 
-  const total=ses.items.reduce(function(a,it){return a+setsFor(it)},0);
-  const got=ses.items.reduce(function(a,it){return a+((S.cur.m[it.x]||[]).filter(Boolean).length)},0);
-  document.getElementById("finishBtn").textContent=got>=total?"Finish session ✓":"Finish session ("+got+"/"+total+" sets)";
+  document.getElementById("finishBtn").textContent=gt>=tot?"Finish session ✓":"Finish session ("+gt+"/"+tot+" done)";
   document.getElementById("finishHint").textContent=
-    got>=total?"":"You can finish early — a short session logged beats a perfect one skipped.";
+    gt>=tot?"":"You can finish early — a short session logged beats a perfect one skipped.";
 }
 
 document.getElementById("exList").addEventListener("click",function(ev){
@@ -992,16 +979,16 @@ document.getElementById("exList").addEventListener("click",function(ev){
   if(ev.target.closest(".hd")){card.classList.toggle("open");return}
   const sb=ev.target.closest(".set");
   if(sb){
-    const j=+sb.dataset.s,it=SESSIONS[S.cur.k].items.find(function(i){return i.x===x}),n=setsFor(it);
+    const it=SESSIONS[S.cur.k].items.find(function(i){return i.x===x}),n=setsFor(it);
     const m=S.cur.m[x]||(S.cur.m[x]=new Array(n).fill(false));
-    m[j]=!m[j];
-    if(m[j]&&!S.cur.t0)S.cur.t0=Date.now();
+    const was=m.filter(Boolean).length>=n;
+    m.length=n;for(let j=0;j<n;j++)m[j]=!was;
+    if(!was&&!S.cur.t0)S.cur.t0=Date.now();
     save();
-    if(m[j])keepAwake();
+    if(!was)keepAwake();
     const open=card.classList.contains("open");
     renderToday();
     if(open){const c2=document.querySelector('.ex[data-x="'+x+'"]');if(c2)c2.classList.add("open")}
-    if(m[j])startTimer(it.rest);
     return;
   }
 });
@@ -1019,7 +1006,7 @@ document.getElementById("finishBtn").addEventListener("click",function(){
   });
   const mins=S.cur.t0?Math.max(1,Math.round((Date.now()-S.cur.t0)/6e4)):null;
   S.done.push({d:today(),s:k,sets:got,x:perEx,min:mins,w:weekIdx()+1});
-  S.cur=null;save();stopTimer();letSleep();
+  S.cur=null;save();letSleep();
   renderToday();renderLog();
   celebrate(ses,got,earned(S).filter(function(b){return before.indexOf(b.n)<0}));
   window.scrollTo({top:0,behavior:"smooth"});
@@ -1031,7 +1018,7 @@ document.getElementById("resetProg").addEventListener("click",function(){
 });
 
 /* ---------------- keep the screen awake ---------------- */
-const BUILD="10";
+const BUILD="11";
 let wl=null,wlTold=false;
 function sessionLive(){return S.cur&&Object.keys(S.cur.m||{}).some(function(k){
   return (S.cur.m[k]||[]).some(Boolean)})}
@@ -1076,19 +1063,7 @@ function toast(t){
   if(navigator.vibrate)navigator.vibrate(40);
 }
 
-/* ---------------- rest timer ---------------- */
-let tmId=null,tmLeft=0,tmTot=0;
-const tmEl=document.getElementById("timer");
-function startTimer(sec){
-  stopTimer();tmLeft=sec;tmTot=sec;tmEl.classList.add("on");paintTimer();
-  tmId=setInterval(function(){tmLeft--;paintTimer();if(tmLeft<=0){beep();stopTimer()}},1000);
-}
-function paintTimer(){
-  document.getElementById("tmT").textContent=Math.floor(tmLeft/60)+":"+String(Math.max(0,tmLeft%60)).padStart(2,"0");
-  document.getElementById("tmBar").style.width=(100*tmLeft/tmTot)+"%";
-}
-function stopTimer(){if(tmId)clearInterval(tmId);tmId=null;tmEl.classList.remove("on")}
-document.getElementById("tmSkip").addEventListener("click",stopTimer);
+/* ---------------- sound ---------------- */
 function beep(){
   try{
     const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();
